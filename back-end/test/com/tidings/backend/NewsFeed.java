@@ -1,4 +1,4 @@
 package com.tidings.backend;
 
-public class Pipeline {
+public class NewsFeed {
 }
