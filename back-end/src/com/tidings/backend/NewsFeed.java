@@ -13,13 +13,6 @@ import java.util.List;
 public class NewsFeed {
     private SyndFeed feed;
     private List<NewsItem> newsItems;
-    private String feedUrl;
-
-    //these constructors suck. Will fix it later
-    NewsFeed(SyndFeed syndFeed, List<NewsItem> items) {
-        this.feed = syndFeed;
-        this.newsItems = items;
-    }
 
     NewsFeed(SyndFeed syndFeed) {
         this.feed = syndFeed;
@@ -29,33 +22,27 @@ public class NewsFeed {
     private List<NewsItem> extractNewsItems() {
         List<NewsItem> newsItems = new ArrayList<NewsItem>();
         List entries = feed.getEntries();
-        for (Iterator i = entries.iterator(); i.hasNext();) {
+        for (Iterator i = entries.iterator(); i.hasNext(); ) {
             SyndEntry entry = (SyndEntry) i.next();
-            NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), entry.getDescription().getValue());
-            newsItems.add(newsItem);
+            if (null != entry) {
+                NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), entry.getDescription().getValue());
+                newsItems.add(newsItem);
+            }
         }
         return newsItems;
     }
 
     public static NewsFeed pull(String url) {
         try {
-            SyndFeed syndFeed = new SyndFeedInput().build(new XmlReader(new URL(url)));
-            NewsFeed newsFeed = new NewsFeed(syndFeed);
-            newsFeed.feedUrl = url;
-            return newsFeed;
+            SyndFeed syndicatedFeed = new SyndFeedInput().build(new XmlReader(new URL(url)));
+            return new NewsFeed(syndicatedFeed);
         } catch (Exception e) {
-            //throw new RuntimeException(e);
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public String title() {
         return feed.getTitle();
-    }
-
-    public String feedUrl() {
-        return feedUrl;
     }
 
     public List<NewsItem> newsItems() {

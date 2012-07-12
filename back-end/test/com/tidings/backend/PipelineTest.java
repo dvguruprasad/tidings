@@ -1,5 +1,6 @@
 package com.tidings.backend;
 
+import com.tidings.backend.repository.NewsItemsRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;
@@ -23,12 +24,12 @@ public class PipelineTest {
 
         FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker);
         TransformStage trasformStage = new TransformStage(transformInbox, loaderInbox, transformWorker);
-        LoadingStage loadingStage = new LoadingStage(transformInbox, loaderInbox, loadingWorker);
+        LoadingStage loadingStage = new LoadingStage(loaderInbox, null, loadingWorker, new NewsItemsRepository());
         pipeline.addStage(crawlStage);
         pipeline.addStage(trasformStage);
         pipeline.addStage(loadingStage);
         pipeline.start();
-        crawlInbox.publish(new Message(feeds()));
+        crawlInbox.publish(new Message(bigDataFeeds()));
 //        final Message crawlTrigger = new Message(new CrawlableSources());
 
 //        ThreadFiber scheduler = new ThreadFiber();
@@ -54,6 +55,19 @@ public class PipelineTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<String> bigDataFeeds() {
+        String[] feeds = {"http://allthingsd.com/tag/big-data/feed/",
+                "http://feeds.feedburner.com/TdwiChannel-BigDataAnalytics",
+                "http://blogs.teradata.com/rss/",
+                "http://hortonworks.com/feed/",
+                "http://www.zdnet.com/blog/big-data/rss.xml",
+                "http://feeds.feedburner.com/QlikviewMarketingIntelligenceBlog",
+                "http://www.thebigdatainsightgroup.com/site/rss/articles/all",
+                "http://www.smartercomputingblog.com/category/big-data/feed/",
+        };
+        return Arrays.asList(feeds);
     }
 
     private List<String> feeds() {

@@ -16,13 +16,6 @@ public class NewsItem {
         status = ItemStatus.RAW;
     }
 
-    public NewsItem(String title, String link, String transformedText, ItemStatus status) {
-        this.title = title;
-        this.link = link;
-        this.transformedText = transformedText;
-        status = ItemStatus.TRANSFORMED;
-    }
-
     @Override
     public String toString() {
         return "NewsItem{" +
