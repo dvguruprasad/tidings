@@ -1,22 +1,29 @@
-<% items = @news_items.all %>
-<% items.each do |item| %>
-  <div class="container">
-    <strong><%= item.title %></strong>
-    </br>
-    <p><%= item.transformedText %></p>
-    <p><small><%= link_to "read more", item.link %></small></p>
-  </div>
-<% end %>
-
-<ul class="pager">  
-  <% if !@news_items.first_page? %>
-    <li>  
-    <%= link_to "Previous", "/news?page=#{@news_items.current_page - 1}"%>
-    </li>  
+<div class="container">
+  <header class="jumbotron subhead">
+  <h1>tidings</h1>
+  </header>
+  </br>
+  <% items = @news_items.all %>
+  <% items.each do |item| %>
+    <div class="container">
+      <strong><%= item.title %></strong>
+      </br>
+      <p><%= item.transformedText %></p>
+      <small><%= link_to "read more", item.link %></small>
+      <p><small><%= item.publishedDate %></small></p>
+    </div>
   <% end %>
-  <% if !@news_items.last_page? %>
-    <li>  
-    <%= link_to "Next", "/news?page=#{@news_items.current_page + 1}"%>
-    </li>  
-  <% end%>
-</ul>
+
+  <ul class="pager">  
+    <% if !@news_items.first_page? %>
+      <li>  
+      <%= link_to "Previous", "/news?page=#{@news_items.current_page - 1}"%>
+      </li>  
+    <% end %>
+    <% if !@news_items.last_page? %>
+      <li>  
+      <%= link_to "Next", "/news?page=#{@news_items.current_page + 1}"%>
+      </li>  
+    <% end%>
+  </ul>
+</div>
