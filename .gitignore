@@ -1,3 +1,6 @@
 back-end/out/
 back-end/.DS_Store
-back-end/.idea/workspaces.xml
+back-end/.idea/workspace.xml
+front-end/log/*.log
+front-end/tmp/
+

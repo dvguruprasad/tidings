@@ -25,7 +25,7 @@ public class NewsFeed {
         for (Iterator i = entries.iterator(); i.hasNext(); ) {
             SyndEntry entry = (SyndEntry) i.next();
             if (null != entry) {
-                NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), entry.getDescription().getValue());
+                NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), entry.getDescription().getValue(), entry.getPublishedDate());
                 newsItems.add(newsItem);
             }
         }

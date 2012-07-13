@@ -3,6 +3,7 @@ require 'mongo'
 source 'http://gemcutter.org'
 gem 'rails', '3.2.6'
 gem "mongo_mapper"
+gem "kaminari"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

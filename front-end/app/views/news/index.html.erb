@@ -1,5 +1,22 @@
-<html>
-  <body>
-    hello world!
-  </body>
-</html>
+<% items = @news_items.all %>
+<% items.each do |item| %>
+  <div class="container">
+    <strong><%= item.title %></strong>
+    </br>
+    <p><%= item.transformedText %></p>
+    <p><small><%= link_to "read more", item.link %></small></p>
+  </div>
+<% end %>
+
+<ul class="pager">  
+  <% if !@news_items.first_page? %>
+    <li>  
+    <%= link_to "Previous", "/news?page=#{@news_items.current_page - 1}"%>
+    </li>  
+  <% end %>
+  <% if !@news_items.last_page? %>
+    <li>  
+    <%= link_to "Next", "/news?page=#{@news_items.current_page + 1}"%>
+    </li>  
+  <% end%>
+</ul>

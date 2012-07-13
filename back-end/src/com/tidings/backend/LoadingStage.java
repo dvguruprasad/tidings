@@ -15,7 +15,6 @@ public class LoadingStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        System.out.println("inside loader");
         NewsFeed newsFeed = (NewsFeed) message.payload();
         for (NewsItem newsItem : newsFeed.newsItems()) {
             repository.save(newsItem);
