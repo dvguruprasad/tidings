@@ -8,9 +8,9 @@ import org.jetlang.fibers.Fiber;
 public class TransformStage extends Stage {
     private NewsTransformer transformer;
 
-    public TransformStage(Channel<Message> inbox, Channel<Message> outbox, Fiber fiber) {
+    public TransformStage(Channel<Message> inbox, Channel<Message> outbox, Fiber fiber, NewsTransformer newsTransformer) {
         super(inbox, outbox, fiber);
-        this.transformer = new NewsTransformer();
+        this.transformer = newsTransformer;
     }
 
     public void onMessage(Message message) {

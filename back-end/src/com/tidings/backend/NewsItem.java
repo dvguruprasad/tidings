@@ -1,5 +1,6 @@
 package com.tidings.backend;
 
+import com.tidings.backend.repository.Link;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 
 import java.util.Date;
@@ -37,20 +38,8 @@ public class NewsItem {
         }
     }
 
-    public ItemStatus getStatus() {
-        return status;
-    }
-
-    public String getTransformedText() {
-        return transformedText;
-    }
-
-    public String link() {
-        return link;
-    }
-
-    public String title() {
-        return title;
+    public Link link() {
+        return new Link(link);
     }
 
     public static enum ItemStatus {

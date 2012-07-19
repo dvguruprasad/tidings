@@ -15,9 +15,7 @@ public class LoadingStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        NewsFeed newsFeed = (NewsFeed) message.payload();
-        for (NewsItem newsItem : newsFeed.newsItems()) {
-            repository.save(newsItem);
-        }
+        NewsItem newsItem = (NewsItem) message.payload();
+        repository.save(newsItem);
     }
 }
