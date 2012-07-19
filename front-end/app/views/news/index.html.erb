@@ -9,7 +9,7 @@
       <strong><%= item.title %></strong>
       </br>
       <p><%= item.transformedText %></p>
-      <small><%= link_to "read more", item.link %></small>
+      <small><%= link_to "read more", item.link, :target => "_blank" %></small>
       <p><small><%= item.publishedDate %></small></p>
     </div>
   <% end %>

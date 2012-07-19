@@ -1,0 +1,18 @@
+<div class="container">
+  <header class="jumbotron subhead">
+  <h1>Classify</h1>
+  </header>
+  </br>
+  <% @training_data.each do |item| %>
+    <div class="container">
+      <strong><%= item.title %></strong>
+      </br>
+      <p><%= item.transformedText %></p>
+      <small><%= link_to "read more", item.link, :target => "_blank" %></small>
+      <p><small><%= item.publishedDate %></small></p>
+      <% @categories.each do |category|%>
+        <%= button_to category.name, classify_path(:news_item_id => item.id, :category => category.name), :class => "btn" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

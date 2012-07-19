@@ -3,4 +3,5 @@ back-end/.DS_Store
 back-end/.idea/workspace.xml
 front-end/log/*.log
 front-end/tmp/
+front-end/tags
 
