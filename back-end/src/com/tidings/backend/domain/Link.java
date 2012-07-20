@@ -1,4 +1,4 @@
-package com.tidings.backend.repository;
+package com.tidings.backend.domain;
 
 public class Link {
 

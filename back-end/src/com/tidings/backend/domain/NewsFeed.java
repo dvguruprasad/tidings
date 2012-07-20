@@ -1,4 +1,4 @@
-package com.tidings.backend;
+package com.tidings.backend.domain;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;

@@ -1,6 +1,11 @@
 package com.tidings.backend;
 
+import com.tidings.backend.domain.NewsTransformer;
 import com.tidings.backend.repository.NewsItemsRepository;
+import com.tidings.backend.stages.DeduplicationStage;
+import com.tidings.backend.stages.FeedCrawlStage;
+import com.tidings.backend.stages.LoadingStage;
+import com.tidings.backend.stages.TransformStage;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;

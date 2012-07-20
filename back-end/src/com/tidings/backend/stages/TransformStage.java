@@ -1,5 +1,7 @@
-package com.tidings.backend;
+package com.tidings.backend.stages;
 
+import com.tidings.backend.domain.NewsFeed;
+import com.tidings.backend.domain.NewsTransformer;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;

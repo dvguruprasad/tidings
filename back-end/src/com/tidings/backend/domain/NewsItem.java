@@ -1,6 +1,5 @@
-package com.tidings.backend;
+package com.tidings.backend.domain;
 
-import com.tidings.backend.repository.Link;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 
 import java.util.Date;

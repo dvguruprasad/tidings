@@ -1,26 +1,13 @@
 package com.tidings.backend.repository;
 
-import com.mongodb.Mongo;
-import com.tidings.backend.NewsItem;
-import org.jongo.Jongo;
+import com.tidings.backend.domain.Link;
+import com.tidings.backend.domain.NewsItem;
 import org.jongo.MongoCollection;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsItemsRepository {
-    private static Jongo jongo;
-
-    public NewsItemsRepository() {
-        Mongo mongo = null;
-        try {
-            mongo = new Mongo("localhost");
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        jongo = new Jongo(mongo.getDB("tidings_development"));
-    }
+public class NewsItemsRepository extends Repository {
 
     public void save(NewsItem newsItem) {
         collection().save(newsItem);

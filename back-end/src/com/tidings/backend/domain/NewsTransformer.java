@@ -1,4 +1,4 @@
-package com.tidings.backend;
+package com.tidings.backend.domain;
 
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;

@@ -1,6 +1,8 @@
-package com.tidings.backend;
+package com.tidings.backend.stages;
 
-import com.tidings.backend.repository.Link;
+import com.tidings.backend.domain.NewsFeed;
+import com.tidings.backend.domain.NewsItem;
+import com.tidings.backend.domain.Link;
 import com.tidings.backend.repository.NewsItemsRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
