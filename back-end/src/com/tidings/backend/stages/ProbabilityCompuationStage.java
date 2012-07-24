@@ -1,4 +1,4 @@
-package com.tidings.backend;
+package com.tidings.backend.stages;
 
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;

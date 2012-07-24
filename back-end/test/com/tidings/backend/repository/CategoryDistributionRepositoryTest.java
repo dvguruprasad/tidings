@@ -1,6 +1,6 @@
 package com.tidings.backend.repository;
 
-import com.tidings.backend.CategoryDistribution;
+import com.tidings.backend.domain.CategoryDistribution;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

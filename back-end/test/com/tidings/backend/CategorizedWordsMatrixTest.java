@@ -1,6 +1,9 @@
 package com.tidings.backend;
 
-import com.tidings.backend.training.WordBag;
+import com.tidings.backend.domain.CategorizedWordsMatrix;
+import com.tidings.backend.domain.CategoryDistribution;
+import com.tidings.backend.domain.Document;
+import com.tidings.backend.domain.WordBag;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,7 +26,7 @@ public class CategorizedWordsMatrixTest {
     }
 
     private WordBag wordBag(HashSet<String> words, List<Integer> frequencies) {
-        return new WordBag(words, frequencies);
+        return WordBag.create(words, frequencies);
     }
 
     private HashSet<String> words(String... words) {

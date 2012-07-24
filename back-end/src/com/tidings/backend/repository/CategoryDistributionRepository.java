@@ -1,17 +1,17 @@
 package com.tidings.backend.repository;
 
-import com.tidings.backend.CategoryDistribution;
+import com.tidings.backend.domain.CategoryDistribution;
 import org.jongo.MongoCollection;
 
 import java.util.Collection;
 
 public class CategoryDistributionRepository extends Repository {
-    private MongoCollection collection() {
+    private MongoCollection wordCollection() {
         return jongo.getCollection("category_distributions");
     }
 
     public void saveOrUpdate(CategoryDistribution distribution) {
-        collection().update("{'word' : '" + distribution.word() + "'}").upsert().with(" # ", distribution);
+        wordCollection().update("{'word' : '" + distribution.word() + "'}").upsert().with(" # ", distribution);
     }
 
     public void saveOrUpdate(Collection<CategoryDistribution> distributions) {
@@ -21,14 +21,14 @@ public class CategoryDistributionRepository extends Repository {
     }
 
     public CategoryDistribution findByWord(String word) {
-        return collection().findOne("{'word' : '" + word + "' }").as(CategoryDistribution.class);
+        return wordCollection().findOne("{'word' : '" + word + "' }").as(CategoryDistribution.class);
     }
 
     public void deleteAll() {
-        collection().drop();
+        wordCollection().drop();
     }
 
     public long count() {
-        return collection().count();
+        return wordCollection().count();
     }
 }

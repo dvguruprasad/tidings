@@ -1,6 +1,4 @@
-package com.tidings.backend;
-
-import com.tidings.backend.training.WordBag;
+package com.tidings.backend.domain;
 
 import java.util.*;
 
@@ -20,10 +18,10 @@ public class CategorizedWordsMatrix {
         for (Map.Entry<String, Integer> entry : wordBag.entrySet()) {
             String word = entry.getKey();
             if (distributions.get(word) != null) {
-                distributions.get(word).addOrUpdateCategory(document.category());
+                distributions.get(word).addOrUpdateCategory(document.category(), entry.getValue());
             } else {
                 CategoryDistribution distribution = new CategoryDistribution(word);
-                distribution.addOrUpdateCategory(document.category());
+                distribution.addOrUpdateCategory(document.category(), entry.getValue());
                 distributions.put(word, distribution);
             }
             

@@ -1,4 +1,4 @@
-package com.tidings.backend;
+package com.tidings.backend.domain;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +21,14 @@ public class CategoryDistribution {
 
 
     public void addOrUpdateCategory(String category) {
+        addOrUpdateCategory(category, 1);
+    }
+
+    public void addOrUpdateCategory(String category, int count) {
         if (categoryScores.containsKey(category)) {
             categoryScores.put(category, new Integer(categoryScores.get(category).intValue() + 1));
         } else {
-            categoryScores.put(category, 1);
+            categoryScores.put(category, count);
         }
     }
 

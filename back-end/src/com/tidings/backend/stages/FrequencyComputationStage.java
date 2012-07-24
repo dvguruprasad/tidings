@@ -1,19 +1,18 @@
 package com.tidings.backend.stages;
 
-import com.tidings.backend.CategorizedWordsMatrix;
-import com.tidings.backend.Document;
+import com.tidings.backend.domain.CategorizedWordsMatrix;
+import com.tidings.backend.domain.Document;
 import com.tidings.backend.repository.CategoryDistributionRepository;
-import com.tidings.backend.training.WordBag;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
 
-public class FrequencyCalculationStage extends Stage {
+public class FrequencyComputationStage extends Stage {
 
     private final CategoryDistributionRepository repository;
 
-    public FrequencyCalculationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber) {
+    public FrequencyComputationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber) {
         super(inbox, outbox, threadFiber);
         repository = new CategoryDistributionRepository();
     }

@@ -1,6 +1,4 @@
-package com.tidings.backend;
-
-import com.tidings.backend.training.WordBag;
+package com.tidings.backend.domain;
 
 public class Document {
     private WordBag wordBag;

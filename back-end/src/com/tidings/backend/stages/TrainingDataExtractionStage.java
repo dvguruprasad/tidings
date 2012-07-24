@@ -1,4 +1,4 @@
-package com.tidings.backend;
+package com.tidings.backend.stages;
 
 import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
@@ -15,9 +15,6 @@ public class TrainingDataExtractionStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        publish(new Message(trainingRepository.getRecords(50)));
-        publish(new Message(trainingRepository.getRecords(50)));
-        publish(new Message(trainingRepository.getRecords(50)));
-        publish(new Message(trainingRepository.getRecords(50)));
+        publish(new Message(trainingRepository.getCategorizedRecords(5)));
     }
 }
