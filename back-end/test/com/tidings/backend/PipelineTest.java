@@ -90,6 +90,7 @@ public class PipelineTest {
                 "http://feeds.feedburner.com/smartdatacollective_allposts",
                 "http://feeds.feedburner.com/typepad/petewarden",
                 "http://marcandrews.typepad.com/marc_andrews/atom.xml",
+                "http://www.allthingsdistributed.com/index.xml",
         };
         return Arrays.asList(feeds);
     }
