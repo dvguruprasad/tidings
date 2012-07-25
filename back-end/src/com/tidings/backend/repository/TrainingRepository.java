@@ -15,10 +15,18 @@ public class TrainingRepository extends Repository {
 
     public List<TrainingRecord> getCategorizedRecords(int numberOfRecords) {
         ArrayList<TrainingRecord> result = new ArrayList<TrainingRecord>();
-        Iterable<TrainingRecord> trainingRecordsIterable = collection().find("{'category' : {$ne : null}}").limit(numberOfRecords).as(TrainingRecord.class);
+        Iterable<TrainingRecord> trainingRecordsIterable = collection().find(whereCategoryIsNotNull()).limit(numberOfRecords).as(TrainingRecord.class);
         for (TrainingRecord trainingRecord : trainingRecordsIterable) {
             result.add(trainingRecord);
         }
         return result;
+    }
+
+    public long getCategorizedRecordsCount() {
+        return collection().count(whereCategoryIsNotNull());
+    }
+
+    private String whereCategoryIsNotNull() {
+        return "{'category' : {$ne : null}}";
     }
 }
