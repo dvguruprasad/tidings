@@ -21,7 +21,7 @@ public class TrainingPipelineTest {
         MemoryChannel<Message> trainingLoadInbox = new MemoryChannel<Message>();
         MemoryChannel<Message> transformationInbox = new MemoryChannel<Message>();
         MemoryChannel<Message> frequencyInbox = new MemoryChannel<Message>();
-        MemoryChannel<Message> probabilityInbox = new MemoryChannel<Message>();
+//        MemoryChannel<Message> probabilityInbox = new MemoryChannel<Message>();
 
         ThreadFiber dataExtractionWorker = new ThreadFiber();
         ThreadFiber crawlWorker = new ThreadFiber();

@@ -9,7 +9,6 @@ import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
 
 public class FrequencyComputationStage extends Stage {
-
     private final CategoryDistributionRepository repository;
 
     public FrequencyComputationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber) {
