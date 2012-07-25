@@ -11,7 +11,7 @@ public class CategoryDistributionRepository extends Repository {
     }
 
     public void saveOrUpdate(CategoryDistribution distribution) {
-        wordCollection().update("{'word' : '" + distribution.word() + "'}").upsert().with(" # ", distribution);
+        wordCollection().update("{\"word\" :\"" + distribution.word() + "\"}").upsert().with(" # ", distribution);
     }
 
     public void saveOrUpdate(Collection<CategoryDistribution> distributions) {

@@ -26,7 +26,6 @@ public class CategorizedWordsMatrix {
                 distribution.addOrUpdateCategory(document.category(), entry.getValue());
                 distributions.put(word, distribution);
             }
-
         }
     }
 

@@ -15,6 +15,6 @@ public class TrainingDataExtractionStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        publish(new Message(trainingRepository.getCategorizedRecords(5)));
+        publish(new Message(trainingRepository.getCategorizedRecords(418)));
     }
 }

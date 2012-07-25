@@ -25,6 +25,6 @@ public class TextSanitizerTest {
     }
 
     private StopWords stopWords() {
-        return new StopWords("could", "it", "be", "that", "with", "just", "to", "some");
+        return new StopWords("a", "could", "it", "be", "that", "with", "just", "to", "some");
     }
 }
