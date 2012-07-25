@@ -14,11 +14,11 @@ public class TextSanitizerTest {
                 " help launch some new hardware");
         Assert.assertEquals(9, sanitized.size());
 
-        AssertWords(sanitized, "larry", "picked", "fight", "ceo", "mike", "help", "launch", "new", "hardware");
+        assertWords(sanitized, "larry", "picked", "fight", "ceo", "mike", "help", "launch", "new", "hardware");
 
     }
 
-    private void AssertWords(List<String> sanitized, String... expectedWords) {
+    private void assertWords(List<String> sanitized, String... expectedWords) {
         for (String expectedWord : expectedWords) {
             Assert.assertTrue(sanitized.contains(expectedWord));
         }

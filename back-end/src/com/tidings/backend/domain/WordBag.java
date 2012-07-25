@@ -17,19 +17,9 @@ public class WordBag {
         for (String word : words) {
             if (wordBag.map.containsKey(word)) {
                 wordBag.map.put(word, wordBag.map.get(word) + 1);
-            } else{
+            } else {
                 wordBag.map.put(word, 1);
             }
-        }
-        return wordBag;
-    }
-
-    public static WordBag create(Set<String> words, List<Integer> frequencies) {
-        WordBag wordBag = new WordBag();
-        wordBag.map = new HashMap<String, Integer>();
-        int index = 0;
-        for (String word : words) {
-            wordBag.map.put(word, frequencies.get(index++));
         }
         return wordBag;
     }

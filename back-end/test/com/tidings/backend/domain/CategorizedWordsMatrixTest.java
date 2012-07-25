@@ -23,6 +23,7 @@ public class CategorizedWordsMatrixTest {
         assertCategoryDistribution("hadoop", 3, 3);
         assertCategoryDistribution("cloud", 0, 1);
         assertCategoryDistribution("tasktrackerjob", 1, 0);
+        assertCategoryDistribution("junk", 0, 0);
     }
 
     private void assertCategoryDistribution(String word, int countForInfrastructure, int countForAnalysis) {

@@ -1,6 +1,8 @@
 package com.tidings.backend.domain;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CategorizedWordsMatrix {
     Map<String, CategoryDistribution> distributions;
@@ -24,11 +26,11 @@ public class CategorizedWordsMatrix {
                 distribution.addOrUpdateCategory(document.category(), entry.getValue());
                 distributions.put(word, distribution);
             }
-            
+
         }
     }
-    
-    public Collection<CategoryDistribution> distributions(){
+
+    public Collection<CategoryDistribution> distributions() {
         return distributions.values();
     }
 }
