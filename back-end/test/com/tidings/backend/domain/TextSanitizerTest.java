@@ -15,7 +15,6 @@ public class TextSanitizerTest {
         Assert.assertEquals(9, sanitized.size());
 
         assertWords(sanitized, "larry", "picked", "fight", "ceo", "mike", "help", "launch", "new", "hardware");
-
     }
 
     private void assertWords(List<String> sanitized, String... expectedWords) {

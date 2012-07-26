@@ -28,22 +28,18 @@ public class TrainingPipelineTest {
         ThreadFiber frequencyWorker = new ThreadFiber();
 //        ThreadFiber probablityWorker = new ThreadFiber();
 
-        TrainingDataExtractionStage extractionStage =
-                new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
-
+        TrainingDataExtractionStage extractionStage = new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
         TrainingRecordTransformationStage transformationStage = new TrainingRecordTransformationStage(transformationInbox, frequencyInbox, crawlWorker);
-
         FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, null, frequencyWorker);
-
 //        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker);
 
         pipeline.addStage(extractionStage);
         pipeline.addStage(transformationStage);
         pipeline.addStage(frequencyCompuationStage);
 //        pipeline.addStage(probabilityCompuationStage);
+
         pipeline.start();
         trainingLoadInbox.publish(new Message("something"));
-
         try {
             dataExtractionWorker.join();
             crawlWorker.join();

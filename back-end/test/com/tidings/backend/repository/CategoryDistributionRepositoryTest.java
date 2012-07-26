@@ -1,6 +1,7 @@
 package com.tidings.backend.repository;
 
 import com.tidings.backend.domain.CategoryDistribution;
+import com.tidings.backend.domain.CategoryScore;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class CategoryDistributionRepositoryTest {
         CategoryDistribution savedDistribution = repository.findByWord("hadoop");
         Assert.assertEquals(1, repository.count());
         Assert.assertNotNull(savedDistribution);
-        Assert.assertEquals(1, savedDistribution.wordFrequency("infrastructure"));
+        Assert.assertEquals(new CategoryScore(1), savedDistribution.categoryScore("infrastructure"));
     }
 
     @Test
@@ -40,7 +41,7 @@ public class CategoryDistributionRepositoryTest {
         
         CategoryDistribution updatedDistribution = repository.findByWord("replica");
         Assert.assertEquals(1, repository.count());
-        Assert.assertEquals(1, updatedDistribution.wordFrequency("technology"));
+        Assert.assertEquals(new CategoryScore(1), updatedDistribution.categoryScore("technology"));
     }
 
     @Test
@@ -57,7 +58,7 @@ public class CategoryDistributionRepositoryTest {
 
         CategoryDistribution updatedDistribution = repository.findByWord("replica");
         Assert.assertEquals(1, repository.count());
-        Assert.assertEquals(4, updatedDistribution.wordFrequency("analysis"));
+        Assert.assertEquals(new CategoryScore(4), updatedDistribution.categoryScore("analysis"));
     }
 
     @Test
@@ -68,6 +69,6 @@ public class CategoryDistributionRepositoryTest {
 
         CategoryDistribution updatedDistribution = repository.findByWord("replica");
         Assert.assertEquals(1, repository.count());
-        Assert.assertEquals(0, updatedDistribution.wordFrequency("foobar"));
+        Assert.assertEquals(CategoryScore.EMPTY, updatedDistribution.categoryScore("foobar"));
     }
 }

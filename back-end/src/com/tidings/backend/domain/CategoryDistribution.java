@@ -5,20 +5,19 @@ import java.util.Map;
 
 public class CategoryDistribution {
     private String word;
-    Map<String, Integer> categoryScores;
-
-    public String word() {
-        return word;
-    }
+    Map<String, CategoryScore> categoryScores;
 
     public CategoryDistribution() {
     }
 
     public CategoryDistribution(String word) {
         this.word = word;
-        categoryScores = new HashMap<String, Integer>();
+        categoryScores = new HashMap<String, CategoryScore>();
     }
 
+    public String word() {
+        return word;
+    }
 
     public void addOrUpdateCategory(String category) {
         addOrUpdateCategory(category, 1);
@@ -26,17 +25,19 @@ public class CategoryDistribution {
 
     public void addOrUpdateCategory(String category, int count) {
         if (categoryScores.containsKey(category)) {
-            categoryScores.put(category, new Integer(categoryScores.get(category).intValue() + 1));
+            CategoryScore categoryScore = categoryScores.get(category);
+            categoryScore.addToFrequencyCount(count);
+            categoryScores.put(category, categoryScore);
         } else {
-            categoryScores.put(category, count);
+            categoryScores.put(category, new CategoryScore(count));
         }
     }
 
-    public int wordFrequency(String category) {
-        return categoryScores.containsKey(category) ? categoryScores.get(category) : 0;
+    public CategoryScore categoryScore(String category) {
+        return categoryScores.containsKey(category) ? categoryScores.get(category) : CategoryScore.EMPTY;
     }
 
-    public Map<String, Integer> scores() {
+    public Map<String, CategoryScore> scores() {
         return categoryScores;
     }
 }

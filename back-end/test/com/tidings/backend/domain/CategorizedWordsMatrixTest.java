@@ -20,15 +20,15 @@ public class CategorizedWordsMatrixTest {
         matrix.train(new Document(wordBag("cloud", "hadoop", "spending", "hadoop", "hadoop"), "analysis"));
         matrix.train(new Document(wordBag("hadoop", "HDFS", "mapreduce", "hadoop"), "infrastructure"));
         matrix.train(new Document(wordBag("hadoop", "tasktrackerjob", "solving"), "infrastructure"));
-        assertCategoryDistribution("hadoop", 3, 3);
-        assertCategoryDistribution("cloud", 0, 1);
-        assertCategoryDistribution("tasktrackerjob", 1, 0);
+        assertCategoryDistribution("hadoop", new CategoryScore(3), new CategoryScore(3));
+        assertCategoryDistribution("cloud", CategoryScore.EMPTY, new CategoryScore(1));
+        assertCategoryDistribution("tasktrackerjob", new CategoryScore(1), CategoryScore.EMPTY);
     }
 
-    private void assertCategoryDistribution(String word, int countForInfrastructure, int countForAnalysis) {
+    private void assertCategoryDistribution(String word, CategoryScore infrastructureScore, CategoryScore analysisScore) {
         CategoryDistribution distribution = matrix.categoryDistribution(word);
-        Assert.assertEquals(countForInfrastructure, distribution.wordFrequency("infrastructure"));
-        Assert.assertEquals(countForAnalysis, distribution.wordFrequency("analysis"));
+        Assert.assertEquals(infrastructureScore, distribution.categoryScore("infrastructure"));
+        Assert.assertEquals(analysisScore, distribution.categoryScore("analysis"));
     }
 
     private WordBag wordBag(String... words) {

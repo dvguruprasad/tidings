@@ -5,11 +5,9 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.util.Version;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class TextSanitizer {
@@ -26,7 +24,9 @@ public class TextSanitizer {
         try {
             while (tokenStream.incrementToken()) {
                 CharTermAttribute attribute = tokenStream.getAttribute(CharTermAttribute.class);
-                result.add(attribute.toString());
+                String word = attribute.toString();
+                if (word.length() > 2)
+                    result.add(word);
             }
         } catch (IOException e) {
             e.printStackTrace();

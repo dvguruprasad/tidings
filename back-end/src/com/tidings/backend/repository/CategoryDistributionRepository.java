@@ -6,12 +6,12 @@ import org.jongo.MongoCollection;
 import java.util.Collection;
 
 public class CategoryDistributionRepository extends Repository {
-    private MongoCollection wordCollection() {
+    private MongoCollection collection() {
         return jongo.getCollection("category_distributions");
     }
 
     public void saveOrUpdate(CategoryDistribution distribution) {
-        wordCollection().update("{\"word\" :\"" + distribution.word() + "\"}").upsert().with(" # ", distribution);
+        collection().update("{\"word\" :\"" + distribution.word() + "\"}").upsert().with(" # ", distribution);
     }
 
     public void saveOrUpdate(Collection<CategoryDistribution> distributions) {
@@ -21,14 +21,18 @@ public class CategoryDistributionRepository extends Repository {
     }
 
     public CategoryDistribution findByWord(String word) {
-        return wordCollection().findOne("{'word' : '" + word + "' }").as(CategoryDistribution.class);
+        return collection().findOne("{'word' : '" + word + "' }").as(CategoryDistribution.class);
     }
 
     public void deleteAll() {
-        wordCollection().drop();
+        collection().drop();
     }
 
     public long count() {
-        return wordCollection().count();
+        return collection().count();
+    }
+
+    public Iterable<CategoryDistribution> all() {
+        return collection().find().as(CategoryDistribution.class);
     }
 }
