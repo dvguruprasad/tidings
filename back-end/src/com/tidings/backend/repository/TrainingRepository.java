@@ -3,13 +3,12 @@ package com.tidings.backend.repository;
 import com.tidings.backend.domain.TrainingRecord;
 import org.jongo.MongoCollection;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingRepository extends Repository {
-    
-    private MongoCollection collection(){
+
+    private MongoCollection collection() {
         return jongo.getCollection("training_data");
     }
 
@@ -28,5 +27,13 @@ public class TrainingRepository extends Repository {
 
     private String whereCategoryIsNotNull() {
         return "{'category' : {$ne : null}}";
+    }
+
+    public long count() {
+        return collection().count();
+    }
+
+    public long count(String category) {
+        return collection().count("{'category' : '" + category + "'}");
     }
 }

@@ -22,7 +22,7 @@ public class CategoryScore {
         this.probability = probability;
     }
 
-    public void addToFrequencyCount(int count) {
+    public void updateFrequency(int count) {
         frequency += count;
     }
 

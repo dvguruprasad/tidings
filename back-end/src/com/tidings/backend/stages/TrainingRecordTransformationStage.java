@@ -11,10 +11,12 @@ import java.util.List;
 public class TrainingRecordTransformationStage extends Stage {
 
     private final TextSanitizer textSanitizer;
+    private int count;
 
     public TrainingRecordTransformationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber worker) {
         super(inbox, outbox, worker);
         textSanitizer = new TextSanitizer(new StopWords("data/stopwords.txt"));
+        count = 0;
     }
 
     public void onMessage(Message message) {
@@ -23,7 +25,8 @@ public class TrainingRecordTransformationStage extends Stage {
         for (TrainingRecord trainingRecord : trainingRecords) {
             List<String> sanitized = textSanitizer.sanitize(trainingRecord.transformedText());
             Document document = new Document(WordBag.create(sanitized), trainingRecord.category());
-            publish(new Message(document));
+            count++;
+                publish(new Message(document));
         }
     }
 }

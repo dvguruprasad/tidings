@@ -23,13 +23,13 @@ public class CategoryDistribution {
         addOrUpdateCategory(category, 1);
     }
 
-    public void addOrUpdateCategory(String category, int count) {
+    public void addOrUpdateCategory(String category, int frequency) {
         if (categoryScores.containsKey(category)) {
             CategoryScore categoryScore = categoryScores.get(category);
-            categoryScore.addToFrequencyCount(count);
+            categoryScore.updateFrequency(frequency);
             categoryScores.put(category, categoryScore);
         } else {
-            categoryScores.put(category, new CategoryScore(count));
+            categoryScores.put(category, new CategoryScore(frequency));
         }
     }
 
@@ -37,7 +37,27 @@ public class CategoryDistribution {
         return categoryScores.containsKey(category) ? categoryScores.get(category) : CategoryScore.EMPTY;
     }
 
-    public Map<String, CategoryScore> scores() {
-        return categoryScores;
+    public void computeProbabilities(Probability probability) {
+        int totalFrequency = totalFrequency();
+        for (String category : categoryScores.keySet()) {
+            computeProbability(category, totalFrequency, probability);
+        }
+    }
+
+    private void computeProbability(String category, int totalFrequency, Probability probability) {
+        CategoryScore categoryScore = categoryScores.get(category);
+        float probabilityOfWordAppearingInCategory = categoryScore.frequency() / (float) totalFrequency;
+        float documentProbability = probability.ofADocumentBelongingToCategory(category);
+        float result = (probabilityOfWordAppearingInCategory * documentProbability)
+                / (probabilityOfWordAppearingInCategory * documentProbability + ((1 - probabilityOfWordAppearingInCategory) * (1 - documentProbability)));
+        categoryScores.get(category).setProbability(result);
+    }
+
+    private int totalFrequency() {
+        int result = 0;
+        for (CategoryScore categoryScore : categoryScores.values()) {
+            result += categoryScore.frequency();
+        }
+        return result;
     }
 }

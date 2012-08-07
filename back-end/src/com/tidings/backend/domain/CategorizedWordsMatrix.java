@@ -11,6 +11,13 @@ public class CategorizedWordsMatrix {
         distributions = new HashMap<String, CategoryDistribution>();
     }
 
+    public CategorizedWordsMatrix(Iterable<CategoryDistribution> categoryDistributions) {
+        distributions = new HashMap<String, CategoryDistribution>();
+        for (CategoryDistribution distribution : categoryDistributions) {
+            distributions.put(distribution.word(), distribution);
+        }
+    }
+
     public CategoryDistribution categoryDistribution(String word) {
         return distributions.get(word);
     }

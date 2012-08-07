@@ -35,4 +35,8 @@ public class WordBag {
     public int countFor(String word) {
         return map.containsKey(word) ? map.get(word) : 0;
     }
+
+    public Set<String> words() {
+        return map.keySet();
+    }
 }

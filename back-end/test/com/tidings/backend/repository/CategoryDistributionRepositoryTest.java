@@ -11,13 +11,13 @@ public class CategoryDistributionRepositoryTest {
     private CategoryDistributionRepository repository;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         repository = new CategoryDistributionRepository();
         repository.deleteAll();
     }
 
     @Test
-    public void shouldCreateNewCategoryDistribution(){
+    public void shouldCreateNewCategoryDistribution() {
         CategoryDistribution distribution = new CategoryDistribution("hadoop");
         distribution.addOrUpdateCategory("infrastructure");
         distribution.addOrUpdateCategory("concept");
@@ -30,7 +30,7 @@ public class CategoryDistributionRepositoryTest {
     }
 
     @Test
-    public void shouldAddNewCategoryToExistingCategoryDistribution(){
+    public void shouldAddNewCategoryToExistingCategoryDistribution() {
         CategoryDistribution distributionForReplica = new CategoryDistribution("replica");
         distributionForReplica.addOrUpdateCategory("analysis");
         repository.saveOrUpdate(distributionForReplica);
@@ -38,14 +38,14 @@ public class CategoryDistributionRepositoryTest {
         CategoryDistribution savedDistribution = repository.findByWord("replica");
         savedDistribution.addOrUpdateCategory("technology");
         repository.saveOrUpdate(savedDistribution);
-        
+
         CategoryDistribution updatedDistribution = repository.findByWord("replica");
         Assert.assertEquals(1, repository.count());
         Assert.assertEquals(new CategoryScore(1), updatedDistribution.categoryScore("technology"));
     }
 
     @Test
-    public void shouldUpdateCategoryScoreForAnExistingCategory(){
+    public void shouldUpdateCategoryScoreForAnExistingCategory() {
         CategoryDistribution distribution = new CategoryDistribution("replica");
         distribution.addOrUpdateCategory("analysis");
         repository.saveOrUpdate(distribution);
@@ -62,7 +62,7 @@ public class CategoryDistributionRepositoryTest {
     }
 
     @Test
-    public void shouldReturnCategoryScoreAsZeroForNonExistantCategory(){
+    public void shouldReturnCategoryScoreAsZeroForNonExistantCategory() {
         CategoryDistribution distribution = new CategoryDistribution("replica");
         distribution.addOrUpdateCategory("analysis");
         repository.saveOrUpdate(distribution);
