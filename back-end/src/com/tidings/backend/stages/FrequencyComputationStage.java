@@ -32,7 +32,7 @@ public class FrequencyComputationStage extends Stage {
         distributionRepository.saveOrUpdate(matrix.distributions());
         totalProcessed += 1;
         if (totalProcessed == totalTrainingRecords) {
-            publish(new Message("trigger"));
+            publish(new Message("TriggerProbabilityComputation"));
         }
     }
 }
