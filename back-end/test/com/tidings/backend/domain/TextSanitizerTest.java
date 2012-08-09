@@ -8,7 +8,7 @@ import java.util.List;
 public class TextSanitizerTest {
     @Test
     public void shouldRemoveStopWordsFromText() {
-        TextSanitizer sanitizer = new TextSanitizer(stopWords());
+        TextSanitizer sanitizer = TextSanitizer.create();
         List<String> sanitized = sanitizer.sanitize("Could it be that Larry picked a " +
                 "fight with CEO Mike just to" +
                 " help launch some new hardware");

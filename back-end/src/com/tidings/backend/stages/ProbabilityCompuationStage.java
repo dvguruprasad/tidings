@@ -1,7 +1,6 @@
 package com.tidings.backend.stages;
 
 import com.tidings.backend.domain.CategoryDistribution;
-import com.tidings.backend.domain.Probability;
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
@@ -21,11 +20,9 @@ public class ProbabilityCompuationStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        Probability probability = new Probability(trainingRepository);
-
         Iterable<CategoryDistribution> allCategoryDistributions = categoryDistributionRepository.all();
         for (CategoryDistribution distribution : allCategoryDistributions) {
-            distribution.computeProbabilities(probability);
+            distribution.computeProbabilities();
             categoryDistributionRepository.saveOrUpdate(distribution);
         }
     }

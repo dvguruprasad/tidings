@@ -18,7 +18,7 @@ public class FeedCrawlStage extends Stage {
     public void onMessage(Message message) {
         List<String> feedList = (List<String>) message.payload();
         for (String url : feedList) {
-            System.out.println("pulling feed from :" + url);
+            System.out.println("Pulling feed from: " + url);
             NewsFeed feed = NewsFeed.pull(url);
             if (feed != null)
                 publish(new Message(feed));

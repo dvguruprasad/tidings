@@ -14,7 +14,7 @@ public class TrainingRecordTransformationStage extends Stage {
 
     public TrainingRecordTransformationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber worker) {
         super(inbox, outbox, worker);
-        textSanitizer = new TextSanitizer(new StopWords("data/stopwords.txt"));
+        textSanitizer = TextSanitizer.create();
     }
 
     public void onMessage(Message message) {

@@ -13,7 +13,11 @@ import java.util.List;
 public class TextSanitizer {
     private StopWords stopWords;
 
-    public TextSanitizer(StopWords stopWords) {
+    public static TextSanitizer create(){
+        return new TextSanitizer(new StopWords("data/stopwords.txt"));
+    }
+
+    private TextSanitizer(StopWords stopWords) {
         this.stopWords = stopWords;
     }
 

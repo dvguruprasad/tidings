@@ -17,10 +17,6 @@ public class DeduplicationStage extends Stage {
     public DeduplicationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber,
                               NewsItemsRepository newsItemsRepository) {
         super(inbox, outbox, threadFiber);
-        initialize(newsItemsRepository);
-    }
-
-    private void initialize(NewsItemsRepository newsItemsRepository) {
         links = newsItemsRepository.uniqueLinks();
     }
 

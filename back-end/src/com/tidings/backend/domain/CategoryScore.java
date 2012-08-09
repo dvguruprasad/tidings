@@ -18,6 +18,10 @@ public class CategoryScore {
         return frequency;
     }
 
+    public float probability() {
+        return probability;
+    }
+
     public void setProbability(float probability) {
         this.probability = probability;
     }
