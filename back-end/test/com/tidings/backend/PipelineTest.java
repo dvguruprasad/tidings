@@ -32,10 +32,12 @@ public class PipelineTest {
         ThreadFiber classificationWorker = new ThreadFiber();
         ThreadFiber loadingWorker = new ThreadFiber();
 
+        Probability probability = new Probability(new TrainingRepository(), new CategoryDistributionRepository());
+
         FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker);
         TransformStage trasformStage = transformationStage(transformInbox, dedupInbox, transformWorker);
-        DeduplicationStage deduplicationStage = deduplicationStage(dedupInbox, classificationInbox, dedupWorker);
-        ClassificationStage classificationStage = classificationStage(loaderInbox, classificationInbox, classificationWorker);
+        DeduplicationStage deduplicationStage = new DeduplicationStage(dedupInbox, classificationInbox, dedupWorker, new NewsItemsRepository());
+        ClassificationStage classificationStage = new ClassificationStage(classificationInbox, loaderInbox, classificationWorker, new CategoryRepository(), probability);
         LoadingStage loadingStage = loadingStage(loaderInbox, loadingWorker);
 
         pipeline.addStage(crawlStage);
@@ -80,14 +82,6 @@ public class PipelineTest {
         return new TransformStage(transformInbox, dedupInbox, transformWorker, new NewsTransformer());
     }
 
-    private DeduplicationStage deduplicationStage(MemoryChannel<Message> dedupInbox, MemoryChannel<Message> classificationInbox, ThreadFiber dedupWorker) {
-        return new DeduplicationStage(dedupInbox, classificationInbox, dedupWorker, new NewsItemsRepository());
-    }
-
-    private ClassificationStage classificationStage(MemoryChannel<Message> loaderInbox, MemoryChannel<Message> classificationInbox, ThreadFiber classificationWorker) {
-        return new ClassificationStage(classificationInbox, loaderInbox, classificationWorker, new CategoryRepository(), new Probability(new TrainingRepository(), new CategoryDistributionRepository()));
-    }
-
     private List<String> bigDataFeeds() {
         String[] feeds = {
 //                "http://allthingsd.com/tag/big-data/feed/",
@@ -102,6 +96,9 @@ public class PipelineTest {
 //                "http://bigdatablog.emc.com/?feed=rss2",
 //                "http://blogs.cisco.com/tag/big-data/feed",
 //                "http://beautifuldata.net/feed/",
+//                "http://blog.ffctn.com/rss.xml",
+//                "http://datawithoutborders.cc/feed/",
+//                "http://feeds.feedburner.com/Datavisualization",
                 "http://www.clusterseven.com/ralph-baxters-big-data-blog/rss.xml",
                 "http://www.clusterseven.com/press-releases/rss.xml",
                 "http://blogs.splunk.com/feed/",

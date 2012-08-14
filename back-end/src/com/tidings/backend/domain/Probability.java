@@ -27,9 +27,9 @@ public class Probability {
             CategoryDistribution distribution = categoryDistributionRepository.findByWord(word);
             if (null != distribution) {
                 float probability = probabilityOfDocumentBelongingToCategoryGivenWord(category, distribution);
-                if (0.0 != probability) {
-                    result *= probability;
-                }
+                if (0.0 == probability)
+                    probability = 0.005f;
+                result *= probability;
             }
         }
         return result;

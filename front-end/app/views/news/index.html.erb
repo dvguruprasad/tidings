@@ -8,7 +8,7 @@
     <div class="container">
       <strong><%= item.title %></strong>
       </br>
-      <p><%= item.transformedText %></p>
+      <p><%= item.transformedText[0..430] %>...</p>
       <h2><%= item.category %></h2>
       <small><%= link_to "read more", item.link, :target => "_blank" %></small>
       <p><small><%= item.publishedDate %></small></p>

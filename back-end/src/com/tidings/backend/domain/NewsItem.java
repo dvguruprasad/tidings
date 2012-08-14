@@ -40,7 +40,6 @@ public class NewsItem {
 
     public void transformUsing(NewsTransformer transformer) {
         try {
-
             this.transformedText = transformer.transform(rawText);
             this.wordBag = WordBag.create(transformer.sanitize(fullText));
             status = ItemStatus.TRANSFORMED;

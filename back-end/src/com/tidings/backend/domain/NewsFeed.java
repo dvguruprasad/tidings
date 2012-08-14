@@ -28,7 +28,7 @@ public class NewsFeed {
         for (Iterator i = entries.iterator(); i.hasNext(); ) {
             SyndEntry entry = (SyndEntry) i.next();
             if (null != entry) {
-                NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), extractFullText(entry), extractFullText(entry), entry.getPublishedDate());
+                NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), entry.getDescription().getValue(), extractFullText(entry), entry.getPublishedDate());
                 newsItems.add(newsItem);
             }
         }
@@ -40,6 +40,7 @@ public class NewsFeed {
         try {
             text = ArticleExtractor.INSTANCE.getText(new URL(entry.getLink()));
         } catch (BoilerpipeProcessingException e) {
+            System.out.println("failed extracting content from: " + entry.getLink());
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
