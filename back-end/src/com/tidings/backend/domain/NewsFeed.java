@@ -28,6 +28,7 @@ public class NewsFeed {
         for (Iterator i = entries.iterator(); i.hasNext(); ) {
             SyndEntry entry = (SyndEntry) i.next();
             if (null != entry) {
+//                NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), entry.getDescription().getValue(), "", entry.getPublishedDate());
                 NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), entry.getDescription().getValue(), extractFullText(entry), entry.getPublishedDate());
                 newsItems.add(newsItem);
             }
@@ -53,7 +54,8 @@ public class NewsFeed {
             SyndFeed syndicatedFeed = new SyndFeedInput().build(new XmlReader(new URL(url)));
             return new NewsFeed(syndicatedFeed);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return null;
         }
     }
 

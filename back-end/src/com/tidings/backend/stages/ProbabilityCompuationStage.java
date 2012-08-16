@@ -20,10 +20,12 @@ public class ProbabilityCompuationStage extends Stage {
     }
 
     public void onMessage(Message message) {
+        System.out.println("Computing probabilities...");
         Iterable<CategoryDistribution> allCategoryDistributions = categoryDistributionRepository.all();
         for (CategoryDistribution distribution : allCategoryDistributions) {
             distribution.computeProbabilities();
             categoryDistributionRepository.saveOrUpdate(distribution);
         }
+        System.out.println("Finished training!");
     }
 }
