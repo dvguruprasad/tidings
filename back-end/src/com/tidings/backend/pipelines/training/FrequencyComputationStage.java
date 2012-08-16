@@ -1,4 +1,4 @@
-package com.tidings.backend.stages;
+package com.tidings.backend.pipelines.training;
 
 import com.tidings.backend.domain.CategorizedWordsMatrix;
 import com.tidings.backend.domain.CategoryDistribution;

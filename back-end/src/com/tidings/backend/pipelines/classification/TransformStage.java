@@ -1,4 +1,4 @@
-package com.tidings.backend.stages;
+package com.tidings.backend.pipelines.classification;
 
 import com.tidings.backend.domain.NewsFeed;
 import com.tidings.backend.domain.NewsTransformer;
@@ -17,8 +17,9 @@ public class TransformStage extends Stage {
 
     public void onMessage(Message message) {
         NewsFeed newsFeed = (NewsFeed) message.payload();
-        System.out.println("Transforming " + newsFeed.entryCount() + " newsItems from " + newsFeed.title());
+        System.out.println("Transforming " + newsFeed.entryCount() + " newsItems from " + newsFeed.title() + "...");
         NewsFeed transformed = transformer.transform(newsFeed);
+        System.out.println("Done.");
         Message outbound = new Message(transformed);
         publish(outbound);
     }

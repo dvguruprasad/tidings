@@ -16,7 +16,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-public class PipelineTest {
+public class BulkSeedingPipelineTest {
 
     @Test
     public void shouldExecuteAllStagesOfThePipeline() {
@@ -147,6 +147,6 @@ public class PipelineTest {
     }
 
     public static void main(String[] args) {
-        new PipelineTest().shouldExecuteAllStagesOfThePipeline();
+        new BulkSeedingPipelineTest().shouldExecuteAllStagesOfThePipeline();
     }
 }

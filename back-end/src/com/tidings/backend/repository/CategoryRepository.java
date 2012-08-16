@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryRepository extends Repository {
-    private MongoCollection collection() {
+    protected MongoCollection collection() {
         return jongo.getCollection("categories");
     }
 

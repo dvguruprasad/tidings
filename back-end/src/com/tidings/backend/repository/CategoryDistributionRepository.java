@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public class CategoryDistributionRepository extends Repository {
-    private MongoCollection collection() {
+    protected  MongoCollection collection() {
         return jongo.getCollection("category_distributions");
     }
 

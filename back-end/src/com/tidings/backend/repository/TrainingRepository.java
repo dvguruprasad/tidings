@@ -1,6 +1,7 @@
 package com.tidings.backend.repository;
 
-import com.tidings.backend.domain.TrainingRecord;
+import com.tidings.backend.domain.Link;
+import com.tidings.backend.domain.NewsItem;
 import org.jongo.MongoCollection;
 
 import java.util.ArrayList;
@@ -8,15 +9,15 @@ import java.util.List;
 
 public class TrainingRepository extends Repository {
 
-    private MongoCollection collection() {
+    public MongoCollection collection() {
         return jongo.getCollection("training_data");
     }
 
-    public List<TrainingRecord> getCategorizedRecords(int numberOfRecords) {
-        ArrayList<TrainingRecord> result = new ArrayList<TrainingRecord>();
-        Iterable<TrainingRecord> trainingRecordsIterable = collection().find(whereCategoryIsNotNull()).limit(numberOfRecords).as(TrainingRecord.class);
-        for (TrainingRecord trainingRecord : trainingRecordsIterable) {
-            result.add(trainingRecord);
+    public List<NewsItem> getCategorizedRecords(int numberOfRecords) {
+        ArrayList<NewsItem> result = new ArrayList<NewsItem>();
+        Iterable<NewsItem> iterable = collection().find(whereCategoryIsNotNull()).limit(numberOfRecords).as(NewsItem.class);
+        for (NewsItem NewsItem : iterable) {
+            result.add(NewsItem);
         }
         return result;
     }
@@ -29,11 +30,20 @@ public class TrainingRepository extends Repository {
         return "{'category' : {$ne : null}}";
     }
 
-    public long count() {
-        return collection().count();
-    }
-
     public long count(String category) {
         return collection().count("{'category' : '" + category + "'}");
+    }
+
+    public List<Link> uniqueLinks() {
+        Iterable<Link> iterable = jongo.getCollection("news_items").find("{},{\"link\" : 1, \"_id\" : 0}").as(Link.class);
+        List<Link> links = new ArrayList<Link>();
+        for (Link s : iterable) {
+            links.add(s);
+        }
+        return links;
+    }
+
+    public void save(NewsItem newsItem) {
+        collection().save(newsItem);
     }
 }

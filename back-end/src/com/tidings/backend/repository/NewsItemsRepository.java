@@ -9,11 +9,8 @@ import java.util.List;
 
 public class NewsItemsRepository extends Repository {
 
-    public void save(NewsItem newsItem) {
-        collection().save(newsItem);
-    }
-
-    private MongoCollection collection() {
+    @Override
+    protected MongoCollection collection() {
         return jongo.getCollection("news_items");
     }
 
@@ -24,5 +21,9 @@ public class NewsItemsRepository extends Repository {
             links.add(s);
         }
         return links;
+    }
+
+    public void save(NewsItem newsItem) {
+        collection().save(newsItem);
     }
 }

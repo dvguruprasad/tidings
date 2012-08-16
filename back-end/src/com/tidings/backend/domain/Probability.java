@@ -28,7 +28,7 @@ public class Probability {
             if (null != distribution) {
                 float probability = probabilityOfDocumentBelongingToCategoryGivenWord(category, distribution);
                 if (0.0 == probability)
-                    probability = 0.005f;
+                    probability = 0.05f;
                 result *= probability;
             }
         }
