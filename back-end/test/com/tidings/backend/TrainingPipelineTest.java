@@ -1,10 +1,10 @@
 package com.tidings.backend;
 
+import com.tidings.backend.pipelines.training.TextSanitizationStage;
+import com.tidings.backend.pipelines.training.FrequencyComputationStage;
+import com.tidings.backend.pipelines.training.ProbabilityCompuationStage;
 import com.tidings.backend.repository.TrainingRepository;
-import com.tidings.backend.stages.FrequencyComputationStage;
-import com.tidings.backend.stages.ProbabilityCompuationStage;
-import com.tidings.backend.stages.TrainingDataExtractionStage;
-import com.tidings.backend.stages.TrainingRecordTransformationStage;
+import com.tidings.backend.pipelines.training.TrainingDataExtractionStage;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;
@@ -29,7 +29,7 @@ public class TrainingPipelineTest {
         ThreadFiber probablityWorker = new ThreadFiber();
 
         TrainingDataExtractionStage extractionStage = new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
-        TrainingRecordTransformationStage transformationStage = new TrainingRecordTransformationStage(transformationInbox, frequencyInbox, crawlWorker);
+        TextSanitizationStage transformationStage = new TextSanitizationStage(transformationInbox, frequencyInbox, crawlWorker);
         FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker);
         ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker);
 
