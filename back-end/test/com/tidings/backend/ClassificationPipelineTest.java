@@ -84,21 +84,21 @@ public class ClassificationPipelineTest {
         return new TransformStage(transformInbox, dedupInbox, transformWorker, new NewsTransformer());
     }
 
-    private List<String> feeds(){
+    private List<String> feeds() {
         String[] feeds = {
-                "http://www.thehindu.com/sport/other-sports/?service=rss"
+                "http://www.thehindu.com/sport/other-sports/?service=rss",
 //                "http://sports.yahoo.com/mlb/rss.xml",
 //                "http://sports.yahoo.com/sc/rss.xml",
-//                "http://sports.yahoo.com/oly/rss.xml",
+                "http://sports.yahoo.com/oly/rss.xml",
 //                "http://sports.yahoo.com/ten/rss.xml",
 //                "http://sports.yahoo.com/nhl/rss.xml",
 //                "http://www.skysports.com/rss/0,20514,11881,00.xml",
 //                "http://www.skysports.com/rss/0,20514,12098,00.xml",
-//                "http://www.sciencenews.org/view/feed/name/all.rss",
+                "http://www.sciencenews.org/view/feed/name/all.rss",
 //                "http://www.sciencenews.org/view/feed/collection_id/11/name/Deleted_Scenes.rss",
 //                "http://www.sciencenews.org/view/feed/label_id/2356/name/Atom_%2B_Cosmos.rss",
 //                "http://www.sciencenews.org/view/feed/label_id/2362/name/Earth.rss",
-//                "http://www.sciencenews.org/view/feed/label_id/2337/name/Environment.rss",
+                "http://www.sciencenews.org/view/feed/label_id/2337/name/Environment.rss",
 //                "http://www.sciencenews.org/view/feed/label_id/2363/name/Genes_%2B_Cells.rss",
 //                "http://www.sciencenews.org/view/feed/label_id/2347/name/Science_%2B_Society.rss",
 //                "http://rss.sciam.com/ScientificAmerican-Global",
@@ -107,17 +107,17 @@ public class ClassificationPipelineTest {
 //                "http://timesofindia.indiatimes.com/rssfeeds/1081479906.cms",
 //                "http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml",
 //                "http://www.eonline.com/syndication/feeds/rssfeeds/celebritynews.xml",
-//                "http://www.thehindu.com/arts/music/?service=rss",
+                "http://www.thehindu.com/arts/music/?service=rss",
 //                "http://www.thehindu.com/arts/theatre/?service=rss",
 //                "http://www.thehindu.com/arts/radio-and-tv/?service=rss",
-//                "http://www.bollywoodhungama.com/rss/news.xml",
+                "http://www.bollywoodhungama.com/rss/news.xml",
 //                "http://www.bollywoodhungama.com/rss/movie_reviews.xml",
 //                "http://www.bollywoodhungama.com/rss/music_reviews.xml"
         };
         return Arrays.asList(feeds);
     }
-    
-    
+
+
     private List<String> bigDataFeeds() {
         String[] feeds = {
 //                "http://allthingsd.com/tag/big-data/feed/",

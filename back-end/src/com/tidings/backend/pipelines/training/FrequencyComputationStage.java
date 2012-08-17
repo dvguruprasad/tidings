@@ -1,7 +1,6 @@
 package com.tidings.backend.pipelines.training;
 
 import com.tidings.backend.domain.CategorizedWordsMatrix;
-import com.tidings.backend.domain.CategoryDistribution;
 import com.tidings.backend.domain.Document;
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.TrainingRepository;
@@ -26,12 +25,11 @@ public class FrequencyComputationStage extends Stage {
 
     public void onMessage(Message message) {
         Document document = (Document) message.payload();
-        Iterable<CategoryDistribution> distributions = distributionRepository.findAll(document.wordBag().words(), document.category());
-        CategorizedWordsMatrix matrix = new CategorizedWordsMatrix(distributions);
-        matrix.train(document);
+        CategorizedWordsMatrix matrix = new CategorizedWordsMatrix(distributionRepository).train(document);
         distributionRepository.saveOrUpdate(matrix.distributions());
         totalProcessed += 1;
         if (totalProcessed == totalTrainingRecords) {
+            System.out.println("Triggering probability computation stage");
             publish(new Message("TriggerProbabilityComputation"));
         }
     }

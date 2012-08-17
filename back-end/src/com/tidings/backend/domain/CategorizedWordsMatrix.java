@@ -1,39 +1,42 @@
 package com.tidings.backend.domain;
 
+import com.tidings.backend.repository.CategoryDistributionRepository;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class CategorizedWordsMatrix {
     Map<String, CategoryDistribution> distributions;
+    private CategoryDistributionRepository distributionRepository;
 
     public CategorizedWordsMatrix() {
         distributions = new HashMap<String, CategoryDistribution>();
     }
 
-    public CategorizedWordsMatrix(Iterable<CategoryDistribution> categoryDistributions) {
-        distributions = new HashMap<String, CategoryDistribution>();
-        for (CategoryDistribution distribution : categoryDistributions) {
+    public CategorizedWordsMatrix(CategoryDistributionRepository distributionRepository) {
+        this.distributionRepository = distributionRepository;
+        this.distributions = new HashMap<String, CategoryDistribution>();
+    }
+
+    public CategorizedWordsMatrix train(Document document) {
+        Set<String> words = document.wordBag().words();
+        for (String word : words) {
+            CategoryDistribution distribution = distributionRepository.findByWord(word);
+            if (null == distribution) {
+                distribution = new CategoryDistribution(word);
+                distribution.addOrUpdateCategory(document.category());
+            } else {
+                distribution.addOrUpdateCategory(document.category(), document.wordBag().frequency(word));
+            }
             distributions.put(distribution.word(), distribution);
         }
+        return this;
     }
 
     public CategoryDistribution categoryDistribution(String word) {
         return distributions.get(word);
-    }
-
-    public void train(Document document) {
-        WordBag wordBag = document.wordBag();
-        for (Map.Entry<String, Integer> entry : wordBag.entrySet()) {
-            String word = entry.getKey();
-            if (distributions.get(word) != null) {
-                distributions.get(word).addOrUpdateCategory(document.category(), entry.getValue());
-            } else {
-                CategoryDistribution distribution = new CategoryDistribution(word);
-                distribution.addOrUpdateCategory(document.category(), entry.getValue());
-                distributions.put(word, distribution);
-            }
-        }
     }
 
     public Collection<CategoryDistribution> distributions() {

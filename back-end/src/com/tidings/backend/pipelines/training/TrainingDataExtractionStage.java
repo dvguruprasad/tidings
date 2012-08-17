@@ -19,15 +19,18 @@ public class TrainingDataExtractionStage extends Stage {
 
     public void onMessage(Message message) {
         long total = trainingRepository.getCategorizedRecordsCount();
-        int pageSize = 50;
-        int numberOfPages = ((int) Math.ceil((double) total / pageSize));
-        while (numberOfPages-- > 0) {
-            List<NewsItem> records = trainingRepository.getCategorizedRecords(pageSize);
+        int pageSize = 10;
+        int pageNumber = ((int) Math.ceil((double) total / pageSize));
+        for (int currentPage = 0; currentPage < pageNumber; currentPage++) {
+            int offset = currentPage * pageSize;
+            List<NewsItem> records = trainingRepository.getCategorizedRecords(pageSize, offset);
+            System.out.println("Extracting full text for " + records.size() + " records");
             for (NewsItem record : records) {
                 record.extractFullText();
             }
             publish(new Message(records));
         }
+
     }
 
 }

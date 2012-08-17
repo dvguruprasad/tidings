@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public class CategoryDistributionRepository extends Repository {
-    protected  MongoCollection collection() {
+    protected MongoCollection collection() {
         return jongo.getCollection("category_distributions");
     }
 
@@ -42,7 +42,7 @@ public class CategoryDistributionRepository extends Repository {
         ArrayList<CategoryDistribution> result = new ArrayList<CategoryDistribution>();
         for (String word : words) {
             CategoryDistribution distribution = findByWord(word);
-            if(null == distribution) {
+            if (null == distribution) {
                 distribution = new CategoryDistribution(word);
                 distribution.addOrUpdateCategory(category);
             }

@@ -13,9 +13,9 @@ public class TrainingRepository extends Repository {
         return jongo.getCollection("training_data");
     }
 
-    public List<NewsItem> getCategorizedRecords(int numberOfRecords) {
+    public List<NewsItem> getCategorizedRecords(int numberOfRecords, int offset) {
         ArrayList<NewsItem> result = new ArrayList<NewsItem>();
-        Iterable<NewsItem> iterable = collection().find(whereCategoryIsNotNull()).limit(numberOfRecords).as(NewsItem.class);
+        Iterable<NewsItem> iterable = collection().find(whereCategoryIsNotNull()).limit(numberOfRecords).skip(offset).as(NewsItem.class);
         for (NewsItem NewsItem : iterable) {
             result.add(NewsItem);
         }

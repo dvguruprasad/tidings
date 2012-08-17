@@ -26,7 +26,7 @@ public class CategoryScore {
         this.probability = probability;
     }
 
-    public void updateFrequency(int count) {
+    public void incrementFrequency(int count) {
         frequency += count;
     }
 

@@ -21,6 +21,7 @@ public class TextSanitizationStage extends Stage {
 
     public void onMessage(Message message) {
         List<NewsItem> items = (List<NewsItem>) message.payload();
+        System.out.println("Sanitizing text for " + items.size() + " items");
         for (NewsItem item : items) {
             List<String> sanitized = textSanitizer.sanitize(item.fullText());
             Document document = new Document(WordBag.create(sanitized), item.category());

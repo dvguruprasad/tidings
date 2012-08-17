@@ -26,8 +26,7 @@ public class CategoryDistribution {
     public void addOrUpdateCategory(String category, int frequency) {
         if (categoryScores.containsKey(category)) {
             CategoryScore categoryScore = categoryScores.get(category);
-            categoryScore.updateFrequency(frequency);
-            categoryScores.put(category, categoryScore);
+            categoryScore.incrementFrequency(frequency);
         } else {
             categoryScores.put(category, new CategoryScore(frequency));
         }
