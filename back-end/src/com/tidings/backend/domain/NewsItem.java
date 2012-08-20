@@ -19,7 +19,6 @@ public class NewsItem {
     @JsonIgnore
     private String rawText;
 
-    @JsonIgnore
     private String fullText;
 
     @JsonIgnore

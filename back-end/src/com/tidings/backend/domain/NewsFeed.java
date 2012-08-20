@@ -1,39 +1,20 @@
 package com.tidings.backend.domain;
 
-import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class NewsFeed {
-    private SyndFeed feed;
     private List<NewsItem> newsItems;
+    private String title;
 
-    public NewsFeed(SyndFeed syndFeed) {
-        this.feed = syndFeed;
-        this.newsItems = extractNewsItems();
+    public NewsFeed(String title, List<NewsItem> newsItems) {
+        this.title = title;
+        this.newsItems = newsItems;
     }
-
-    private List<NewsItem> extractNewsItems() {
-        List<NewsItem> newsItems = new ArrayList<NewsItem>();
-        List entries = feed.getEntries();
-        for (Iterator i = entries.iterator(); i.hasNext();) {
-            SyndEntry entry = (SyndEntry) i.next();
-            if (null != entry) {
-                String description = entry.getDescription() == null ? "" : entry.getDescription().getValue();
-                NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), description, entry.getPublishedDate());
-                newsItems.add(newsItem);
-            }
-        }
-
-        return newsItems;
-    }
-
 
     public String title() {
-        return feed.getTitle();
+        return title;
     }
 
     public List<NewsItem> newsItems() {

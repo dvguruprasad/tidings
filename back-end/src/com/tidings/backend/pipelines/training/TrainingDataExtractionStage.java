@@ -24,13 +24,8 @@ public class TrainingDataExtractionStage extends Stage {
         for (int currentPage = 0; currentPage < pageNumber; currentPage++) {
             int offset = currentPage * pageSize;
             List<NewsItem> records = trainingRepository.getCategorizedRecords(pageSize, offset);
-            System.out.println("Extracting full text for " + records.size() + " records");
-            for (NewsItem record : records) {
-                record.extractFullText();
-            }
             publish(new Message(records));
         }
-
     }
 
 }

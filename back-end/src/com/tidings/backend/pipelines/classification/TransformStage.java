@@ -19,7 +19,6 @@ public class TransformStage extends Stage {
         NewsFeed newsFeed = (NewsFeed) message.payload();
         System.out.println("Transforming " + newsFeed.entryCount() + " newsItems from " + newsFeed.title() + "...");
         NewsFeed transformed = transformer.transform(newsFeed);
-        System.out.println("Done.");
         Message outbound = new Message(transformed);
         publish(outbound);
     }

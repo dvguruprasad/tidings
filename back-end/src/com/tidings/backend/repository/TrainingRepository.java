@@ -46,4 +46,8 @@ public class TrainingRepository extends Repository {
     public void save(NewsItem newsItem) {
         collection().save(newsItem);
     }
+
+    public boolean exists(String link) {
+        return collection().count("{\"link\" : \"" + link + "\"}") != 0;
+    }
 }
