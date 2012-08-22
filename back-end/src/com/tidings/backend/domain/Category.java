@@ -2,6 +2,7 @@ package com.tidings.backend.domain;
 
 public class Category {
     private String name;
+    private long wordFrequency;
 
     public Category() {
     }
@@ -12,6 +13,10 @@ public class Category {
 
     public String name() {
         return name;
+    }
+
+    public long wordFrequency() {
+        return wordFrequency;
     }
 
     @Override

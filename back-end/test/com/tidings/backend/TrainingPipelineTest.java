@@ -1,10 +1,13 @@
 package com.tidings.backend;
 
-import com.tidings.backend.pipelines.training.TextSanitizationStage;
+import com.tidings.backend.domain.Probability;
 import com.tidings.backend.pipelines.training.FrequencyComputationStage;
 import com.tidings.backend.pipelines.training.ProbabilityCompuationStage;
-import com.tidings.backend.repository.TrainingRepository;
+import com.tidings.backend.pipelines.training.TextSanitizationStage;
 import com.tidings.backend.pipelines.training.TrainingDataExtractionStage;
+import com.tidings.backend.repository.CategoryDistributionRepository;
+import com.tidings.backend.repository.CategoryRepository;
+import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;
@@ -30,8 +33,8 @@ public class TrainingPipelineTest {
 
         TrainingDataExtractionStage extractionStage = new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
         TextSanitizationStage transformationStage = new TextSanitizationStage(transformationInbox, frequencyInbox, crawlWorker);
-        FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker);
-        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker);
+        FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker, new CategoryRepository(), new TrainingRepository());
+        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, new Probability(new CategoryRepository(), new CategoryDistributionRepository()));
 
         pipeline.addStage(extractionStage);
         pipeline.addStage(transformationStage);

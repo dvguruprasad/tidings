@@ -15,7 +15,7 @@ public class NewsItemsRepository extends Repository {
     }
 
     public List<Link> uniqueLinks() {
-        Iterable<Link> iterable = jongo.getCollection("news_items").find("{},{\"link\" : 1, \"_id\" : 0}").as(Link.class);
+        Iterable<Link> iterable = collection().find("{},{\"link\" : 1, \"_id\" : 0}").as(Link.class);
         List<Link> links = new ArrayList<Link>();
         for (Link s : iterable) {
             links.add(s);

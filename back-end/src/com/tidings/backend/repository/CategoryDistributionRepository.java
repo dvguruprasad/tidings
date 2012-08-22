@@ -34,6 +34,10 @@ public class CategoryDistributionRepository extends Repository {
         return collection().count();
     }
 
+    public long count(String categoryName) {
+        return collection().count("{\"categoryScores." + categoryName + "\" : { $exists : true }}");
+    }
+
     public Iterable<CategoryDistribution> all() {
         return collection().find().as(CategoryDistribution.class);
     }

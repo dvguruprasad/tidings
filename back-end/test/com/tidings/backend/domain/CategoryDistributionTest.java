@@ -9,7 +9,7 @@ public class CategoryDistributionTest {
         CategoryDistribution distribution = new CategoryDistribution("big");
         distribution.addOrUpdateCategory("infrastructure", 4);
         distribution.addOrUpdateCategory("analysis", 7);
-        distribution.computeProbabilities();
+        distribution.computeProbabilities(null);
 
         float infrastructureProbability = distribution.probability("infrastructure");
         float analysisProbability = distribution.probability("analysis");

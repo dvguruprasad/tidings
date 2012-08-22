@@ -6,7 +6,6 @@ import com.tidings.backend.pipelines.classification.*;
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.CategoryRepository;
 import com.tidings.backend.repository.NewsItemsRepository;
-import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;
@@ -32,7 +31,7 @@ public class ClassificationPipelineTest {
         ThreadFiber classificationWorker = new ThreadFiber();
         ThreadFiber loadingWorker = new ThreadFiber();
 
-        Probability probability = new Probability(new TrainingRepository(), new CategoryDistributionRepository());
+        Probability probability = new Probability(new CategoryRepository(), new CategoryDistributionRepository());
 
         FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker);
         TransformStage trasformStage = transformationStage(transformInbox, dedupInbox, transformWorker);
@@ -96,27 +95,27 @@ public class ClassificationPipelineTest {
                 "http://www.thehindu.com/arts/dance/?service=rss",
                 "http://www.thehindu.com/life-and-style/kids/?service=rss",
                 "http://www.thehindu.com/sci-tech/technology/?service=rss",
-//                "http://sports.yahoo.com/mlb/rss.xml",
-//                "http://sports.yahoo.com/sc/rss.xml",
-//                "http://sports.yahoo.com/ten/rss.xml",
-//                "http://sports.yahoo.com/nhl/rss.xml",
-//                "http://www.skysports.com/rss/0,20514,11881,00.xml",
-//                "http://www.skysports.com/rss/0,20514,12098,00.xml",
-//                "http://www.sciencenews.org/view/feed/collection_id/11/name/Deleted_Scenes.rss",
-//                "http://www.sciencenews.org/view/feed/label_id/2356/name/Atom_%2B_Cosmos.rss",
-//                "http://www.sciencenews.org/view/feed/label_id/2362/name/Earth.rss",
-//                "http://www.sciencenews.org/view/feed/label_id/2363/name/Genes_%2B_Cells.rss",
-//                "http://www.sciencenews.org/view/feed/label_id/2347/name/Science_%2B_Society.rss",
-//                "http://rss.sciam.com/ScientificAmerican-Global",
-//                "http://www.sciencenewsdaily.org/feed.xml",
-//                "http://news.google.com/news?pz=1&cf=all&ned=in&hl=en&topic=e&output=rss",
-//                "http://timesofindia.indiatimes.com/rssfeeds/1081479906.cms",
-//                "http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml",
-//                "http://www.eonline.com/syndication/feeds/rssfeeds/celebritynews.xml",
-//                "http://www.thehindu.com/arts/theatre/?service=rss",
-//                "http://www.thehindu.com/arts/radio-and-tv/?service=rss",
-//                "http://www.bollywoodhungama.com/rss/movie_reviews.xml",
-//                "http://www.bollywoodhungama.com/rss/music_reviews.xml"
+                "http://sports.yahoo.com/mlb/rss.xml",
+                "http://sports.yahoo.com/sc/rss.xml",
+                "http://sports.yahoo.com/ten/rss.xml",
+                "http://sports.yahoo.com/nhl/rss.xml",
+                "http://www.skysports.com/rss/0,20514,11881,00.xml",
+                "http://www.skysports.com/rss/0,20514,12098,00.xml",
+                "http://www.sciencenews.org/view/feed/collection_id/11/name/Deleted_Scenes.rss",
+                "http://www.sciencenews.org/view/feed/label_id/2356/name/Atom_%2B_Cosmos.rss",
+                "http://www.sciencenews.org/view/feed/label_id/2362/name/Earth.rss",
+                "http://www.sciencenews.org/view/feed/label_id/2363/name/Genes_%2B_Cells.rss",
+                "http://www.sciencenews.org/view/feed/label_id/2347/name/Science_%2B_Society.rss",
+                "http://rss.sciam.com/ScientificAmerican-Global",
+                "http://www.sciencenewsdaily.org/feed.xml",
+                "http://news.google.com/news?pz=1&cf=all&ned=in&hl=en&topic=e&output=rss",
+                "http://timesofindia.indiatimes.com/rssfeeds/1081479906.cms",
+                "http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml",
+                "http://www.eonline.com/syndication/feeds/rssfeeds/celebritynews.xml",
+                "http://www.thehindu.com/arts/theatre/?service=rss",
+                "http://www.thehindu.com/arts/radio-and-tv/?service=rss",
+                "http://www.bollywoodhungama.com/rss/movie_reviews.xml",
+                "http://www.bollywoodhungama.com/rss/music_reviews.xml"
         };
         return Arrays.asList(feeds);
     }

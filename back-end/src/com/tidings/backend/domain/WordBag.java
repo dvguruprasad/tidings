@@ -43,4 +43,8 @@ public class WordBag {
     public int frequency(String word) {
         return map.containsKey(word) ? map.get(word) : 0;
     }
+
+    public long count() {
+        return map.size();
+    }
 }
