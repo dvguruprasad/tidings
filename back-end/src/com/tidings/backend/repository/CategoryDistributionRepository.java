@@ -1,5 +1,6 @@
 package com.tidings.backend.repository;
 
+import com.mongodb.Bytes;
 import com.tidings.backend.domain.CategoryDistribution;
 import org.jongo.MongoCollection;
 
@@ -9,7 +10,10 @@ import java.util.Set;
 
 public class CategoryDistributionRepository extends Repository {
     protected MongoCollection collection() {
-        return jongo.getCollection("category_distributions");
+        MongoCollection collection = jongo.getCollection("category_distributions");
+        collection.getDBCollection().addOption(Bytes.QUERYOPTION_NOTIMEOUT);
+        return collection;
+
     }
 
     public void saveOrUpdate(CategoryDistribution distribution) {
@@ -40,6 +44,10 @@ public class CategoryDistributionRepository extends Repository {
 
     public Iterable<CategoryDistribution> all() {
         return collection().find().as(CategoryDistribution.class);
+    }
+
+    public Iterable<CategoryDistribution> all(int offset) {
+        return collection().find().skip(offset).as(CategoryDistribution.class);
     }
 
     public Iterable<CategoryDistribution> findAll(Set<String> words, String category) {

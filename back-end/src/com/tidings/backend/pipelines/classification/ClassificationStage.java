@@ -28,10 +28,10 @@ public class ClassificationStage extends Stage {
         WordBag wordBag = newsItem.wordBag();
         List<Category> categories = categoryRepository.all();
         Category finalCategory = null;
-        float highestProbability = (float) 0.0;
+        double highestProbability = 0.0;
 
         for (Category category : categories) {
-            float temp = probability.ofDocumentBelongingToCategoryGivenWords(category, wordBag);
+            double temp = probability.ofDocumentBelongingToCategoryGivenWords(category, wordBag);
             if (temp > highestProbability) {
                 highestProbability = temp;
                 finalCategory = category;

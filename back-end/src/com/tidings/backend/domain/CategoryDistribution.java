@@ -39,7 +39,7 @@ public class CategoryDistribution {
     public void computeProbabilities(Probability probability) {
         int totalFrequency = totalFrequency();
         for (String category : categoryScores.keySet()) {
-            float probabilityOfWordAppearingInCategory = probability.ofWordAppearingInCategory(category, categoryScores.get(category));
+            double probabilityOfWordAppearingInCategory = probability.ofWordAppearingInCategory(category, categoryScores.get(category));
             categoryScores.get(category).setProbability(probabilityOfWordAppearingInCategory);
         }
     }
@@ -52,7 +52,7 @@ public class CategoryDistribution {
         return result;
     }
 
-    public float probability(String category) {
-        return categoryScores.containsKey(category) ? categoryScores.get(category).probability() : (float) 0.0;
+    public double probability(String category) {
+        return categoryScores.containsKey(category) ? categoryScores.get(category).probability() : (double) 0.0;
     }
 }

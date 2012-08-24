@@ -44,9 +44,7 @@ public class TrainingPipelineTest {
         pipeline.start();
         trainingLoadInbox.publish(new Message("something"));
         try {
-            dataExtractionWorker.join();
-            crawlWorker.join();
-            frequencyWorker.join();
+
             probablityWorker.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

@@ -11,9 +11,9 @@ public class CategoryDistributionTest {
         distribution.addOrUpdateCategory("analysis", 7);
         distribution.computeProbabilities(null);
 
-        float infrastructureProbability = distribution.probability("infrastructure");
-        float analysisProbability = distribution.probability("analysis");
-        float dummyProbability = distribution.probability("dummy");
+        double infrastructureProbability = distribution.probability("infrastructure");
+        double analysisProbability = distribution.probability("analysis");
+        double dummyProbability = distribution.probability("dummy");
 
         Assert.assertEquals(0.3636, infrastructureProbability, .0001);
         Assert.assertEquals(0.6363, analysisProbability, .0001);

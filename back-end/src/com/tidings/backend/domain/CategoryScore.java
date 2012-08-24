@@ -4,7 +4,7 @@ public class CategoryScore {
     public static final CategoryScore EMPTY = new CategoryScore();
 
     private int frequency;
-    private float probability;
+    private double probability;
 
     public CategoryScore() {
         frequency = 0;
@@ -18,11 +18,11 @@ public class CategoryScore {
         return frequency;
     }
 
-    public float probability() {
+    public double probability() {
         return probability;
     }
 
-    public void setProbability(float probability) {
+    public void setProbability(double probability) {
         this.probability = probability;
     }
 
@@ -38,15 +38,18 @@ public class CategoryScore {
         CategoryScore that = (CategoryScore) o;
 
         if (frequency != that.frequency) return false;
-        if (Float.compare(that.probability, probability) != 0) return false;
+        if (Double.compare(that.probability, probability) != 0) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = frequency;
-        result = 31 * result + (probability != +0.0f ? Float.floatToIntBits(probability) : 0);
+        int result;
+        long temp;
+        result = frequency;
+        temp = probability != +0.0d ? Double.doubleToLongBits(probability) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 }
