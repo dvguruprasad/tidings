@@ -26,7 +26,7 @@ public class FrequencyComputationStage extends Stage {
 
     public void onMessage(Message message) {
         Document document = (Document) message.payload();
-        CategorizedWordsMatrix matrix = new CategorizedWordsMatrix(distributionRepository).train(document);
+        CategorizedWordsMatrix matrix = new CategorizedWordsMatrix(distributionRepository, categoryRepository.all()).train(document);
         distributionRepository.saveOrUpdate(matrix.distributions());
         categoryRepository.addToWordCount(document.category(), document.wordBag().count());
 

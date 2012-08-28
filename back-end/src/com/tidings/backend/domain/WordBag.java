@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class WordBag {
     private Map<String, Integer> map;
+    private int count = 0;
 
     private WordBag() {
         map = new HashMap<String, Integer>();
@@ -20,6 +21,7 @@ public class WordBag {
             } else {
                 wordBag.map.put(word, 1);
             }
+            wordBag.count++;
         }
         return wordBag;
     }
@@ -45,6 +47,6 @@ public class WordBag {
     }
 
     public long count() {
-        return map.size();
+        return count;
     }
 }

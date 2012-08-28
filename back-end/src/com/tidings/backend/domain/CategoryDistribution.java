@@ -1,6 +1,7 @@
 package com.tidings.backend.domain;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CategoryDistribution {
@@ -10,9 +11,12 @@ public class CategoryDistribution {
     public CategoryDistribution() {
     }
 
-    public CategoryDistribution(String word) {
+    public CategoryDistribution(String word, List<Category> categories) {
         this.word = word;
         categoryScores = new HashMap<String, CategoryScore>();
+        for (Category category : categories) {
+            categoryScores.put(category.name(), new CategoryScore(0));
+        }
     }
 
     public String word() {

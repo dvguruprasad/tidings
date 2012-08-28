@@ -3,10 +3,12 @@ package com.tidings.backend.domain;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class CategoryDistributionTest {
     @Test
     public void shouldComputeProbabilities() {
-        CategoryDistribution distribution = new CategoryDistribution("big");
+        CategoryDistribution distribution = new CategoryDistribution("big", new ArrayList<Category>());
         distribution.addOrUpdateCategory("infrastructure", 4);
         distribution.addOrUpdateCategory("analysis", 7);
         distribution.computeProbabilities(null);

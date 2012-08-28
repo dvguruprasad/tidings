@@ -2,21 +2,20 @@ package com.tidings.backend.domain;
 
 import com.tidings.backend.repository.CategoryDistributionRepository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CategorizedWordsMatrix {
     Map<String, CategoryDistribution> distributions;
     private CategoryDistributionRepository distributionRepository;
+    private List<Category> categories;
 
     public CategorizedWordsMatrix() {
         distributions = new HashMap<String, CategoryDistribution>();
     }
 
-    public CategorizedWordsMatrix(CategoryDistributionRepository distributionRepository) {
+    public CategorizedWordsMatrix(CategoryDistributionRepository distributionRepository, List<Category> categories) {
         this.distributionRepository = distributionRepository;
+        this.categories = categories;
         this.distributions = new HashMap<String, CategoryDistribution>();
     }
 
@@ -25,11 +24,9 @@ public class CategorizedWordsMatrix {
         for (String word : words) {
             CategoryDistribution distribution = distributionRepository.findByWord(word);
             if (null == distribution) {
-                distribution = new CategoryDistribution(word);
-                distribution.addOrUpdateCategory(document.category());
-            } else {
-                distribution.addOrUpdateCategory(document.category(), document.wordBag().frequency(word));
+                distribution = new CategoryDistribution(word, categories);
             }
+            distribution.addOrUpdateCategory(document.category(), document.wordBag().frequency(word));
             distributions.put(distribution.word(), distribution);
         }
         return this;

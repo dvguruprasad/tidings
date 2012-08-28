@@ -34,7 +34,7 @@ public class TrainingPipelineTest {
         TrainingDataExtractionStage extractionStage = new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
         TextSanitizationStage transformationStage = new TextSanitizationStage(transformationInbox, frequencyInbox, crawlWorker);
         FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker, new CategoryRepository(), new TrainingRepository());
-        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, new Probability(new CategoryRepository(), new CategoryDistributionRepository()));
+        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, new Probability(new CategoryRepository(), new CategoryDistributionRepository(), new TrainingRepository()));
 
         pipeline.addStage(extractionStage);
         pipeline.addStage(transformationStage);
@@ -43,9 +43,9 @@ public class TrainingPipelineTest {
 
         pipeline.start();
         trainingLoadInbox.publish(new Message("something"));
-        try {
 
-            probablityWorker.join();
+        try {
+            dataExtractionWorker.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -6,6 +6,7 @@ import com.tidings.backend.pipelines.classification.*;
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.CategoryRepository;
 import com.tidings.backend.repository.NewsItemsRepository;
+import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;
@@ -31,7 +32,7 @@ public class ClassificationPipelineTest {
         ThreadFiber classificationWorker = new ThreadFiber();
         ThreadFiber loadingWorker = new ThreadFiber();
 
-        Probability probability = new Probability(new CategoryRepository(), new CategoryDistributionRepository());
+        Probability probability = new Probability(new CategoryRepository(), new CategoryDistributionRepository(), new TrainingRepository());
 
         FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker);
         TransformStage trasformStage = transformationStage(transformInbox, dedupInbox, transformWorker);
@@ -45,6 +46,7 @@ public class ClassificationPipelineTest {
         pipeline.addStage(classificationStage);
         pipeline.addStage(newsItemsLoadingStage);
         pipeline.start();
+
         crawlInbox.publish(new Message(feeds()));
 //        final Message crawlTrigger = new Message(new CrawlableSources());
 

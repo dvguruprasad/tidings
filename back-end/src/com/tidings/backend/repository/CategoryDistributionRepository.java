@@ -50,19 +50,6 @@ public class CategoryDistributionRepository extends Repository {
         return collection().find().skip(offset).as(CategoryDistribution.class);
     }
 
-    public Iterable<CategoryDistribution> findAll(Set<String> words, String category) {
-        ArrayList<CategoryDistribution> result = new ArrayList<CategoryDistribution>();
-        for (String word : words) {
-            CategoryDistribution distribution = findByWord(word);
-            if (null == distribution) {
-                distribution = new CategoryDistribution(word);
-                distribution.addOrUpdateCategory(category);
-            }
-            result.add(distribution);
-        }
-        return result;
-    }
-
     private String byWord(String word) {
         return "{\"word\" :\"" + word + "\"}";
     }

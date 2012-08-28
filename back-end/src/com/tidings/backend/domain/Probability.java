@@ -2,6 +2,7 @@ package com.tidings.backend.domain;
 
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.CategoryRepository;
+import com.tidings.backend.repository.TrainingRepository;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -9,44 +10,58 @@ import java.util.Set;
 public class Probability {
     private CategoryRepository categoryRepository;
     private CategoryDistributionRepository categoryDistributionRepository;
-    private final HashMap<String, Long> wordFrequencies;
+    private HashMap<String, Long> wordFrequencies;
+    private final TrainingRepository trainingRepository;
 
-    public Probability(CategoryRepository categoryRepository, CategoryDistributionRepository categoryDistributionRepository) {
+    public Probability(CategoryRepository categoryRepository, CategoryDistributionRepository categoryDistributionRepository, TrainingRepository trainingRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryDistributionRepository = categoryDistributionRepository;
-        wordFrequencies = new HashMap<String, Long>();
-        Iterable<Category> all = categoryRepository.all();
-        for (Category category : all) {
-            wordFrequencies.put(category.name(), new Long(categoryDistributionRepository.count(category.name())));
-        }
+        this.trainingRepository = trainingRepository;
+    }
+
+    public double ofWordAppearingInCategory(String categoryName, CategoryScore categoryScore) {
+        return (categoryScore.frequency() + 1) / ((double) wordFrequencies().get(categoryName) + totalDistinctWords());
     }
 
     public double ofDocumentBelongingToCategoryGivenWords(Category category, WordBag wordBag) {
-        double result = 1;
+        double result = 0;
         Set<String> words = wordBag.words();
         for (String word : words) {
             CategoryDistribution distribution = categoryDistributionRepository.findByWord(word);
             if (null != distribution) {
-                double probability = probabilityOfDocumentBelongingToCategoryGivenWord(category, distribution);
-                if (0.0 == probability)
-                    probability = 0.05f;
-                result *= probability;
+                result += (probabilityOfDocumentBelongingToCategoryGivenWord(category, distribution) * wordBag.frequency(word));
             }
         }
-        return result * ofDocumentBelongingToCategory(category.name());
+        return result + ofDocumentBelongingToCategory(category.name());
     }
 
-    public double ofWordAppearingInCategory(String categoryName, CategoryScore categoryScore) {
-        return categoryScore.frequency() / (double) wordFrequencies.get(categoryName);
+    private HashMap<String, Long> wordFrequencies() {
+        if (null == wordFrequencies) {
+            wordFrequencies = new HashMap<String, Long>();
+            Iterable<Category> all = categoryRepository.all();
+
+            for (Category category : all) {
+                wordFrequencies.put(category.name(), categoryRepository.find(category.name()).wordFrequency());
+            }
+        }
+        return wordFrequencies;
+    }
+
+    private long totalDistinctWords() {
+        return categoryDistributionRepository.count();
     }
 
     private double probabilityOfDocumentBelongingToCategoryGivenWord(Category category, CategoryDistribution distribution) {
-        return distribution.categoryScore(category.name()).probability();
+        return log(distribution.categoryScore(category.name()).probability());
     }
 
     private double ofDocumentBelongingToCategory(String categoryName) {
-        long numberOfWordsInCategory = categoryDistributionRepository.count(categoryName);
-        long totalNumberOfWords = categoryDistributionRepository.count();
-        return numberOfWordsInCategory / (double) totalNumberOfWords;
+        long numberOfDocumentsInCategory = trainingRepository.count(categoryName);
+        long totalNumberOfDocuments = trainingRepository.count();
+        return log(numberOfDocumentsInCategory / (double) totalNumberOfDocuments);
+    }
+
+    private double log(double value) {
+        return Math.abs(Math.log(value));
     }
 }

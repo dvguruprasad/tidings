@@ -74,6 +74,10 @@ public class NewsItem {
     public void setCategory(String category) {
         this.category = category;
     }
+    
+    public void setWordBag(WordBag bag){
+        this.wordBag = bag;
+    }
 
     public String fullText() {
         return fullText;

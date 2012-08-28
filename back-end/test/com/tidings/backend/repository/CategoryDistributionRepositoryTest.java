@@ -1,10 +1,14 @@
 package com.tidings.backend.repository;
 
+import com.tidings.backend.domain.Category;
 import com.tidings.backend.domain.CategoryDistribution;
 import com.tidings.backend.domain.CategoryScore;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CategoryDistributionRepositoryTest {
 
@@ -18,7 +22,7 @@ public class CategoryDistributionRepositoryTest {
 
     @Test
     public void shouldCreateNewCategoryDistribution() {
-        CategoryDistribution distribution = new CategoryDistribution("hadoop");
+        CategoryDistribution distribution = new CategoryDistribution("hadoop", categories());
         distribution.addOrUpdateCategory("infrastructure");
         distribution.addOrUpdateCategory("concept");
         repository.saveOrUpdate(distribution);
@@ -31,7 +35,7 @@ public class CategoryDistributionRepositoryTest {
 
     @Test
     public void shouldAddNewCategoryToExistingCategoryDistribution() {
-        CategoryDistribution distributionForReplica = new CategoryDistribution("replica");
+        CategoryDistribution distributionForReplica = new CategoryDistribution("replica", categories());
         distributionForReplica.addOrUpdateCategory("analysis");
         repository.saveOrUpdate(distributionForReplica);
 
@@ -46,7 +50,7 @@ public class CategoryDistributionRepositoryTest {
 
     @Test
     public void shouldUpdateCategoryScoreForAnExistingCategory() {
-        CategoryDistribution distribution = new CategoryDistribution("replica");
+        CategoryDistribution distribution = new CategoryDistribution("replica", categories());
         distribution.addOrUpdateCategory("analysis");
         repository.saveOrUpdate(distribution);
 
@@ -63,12 +67,16 @@ public class CategoryDistributionRepositoryTest {
 
     @Test
     public void shouldReturnCategoryScoreAsZeroForNonExistantCategory() {
-        CategoryDistribution distribution = new CategoryDistribution("replica");
+        CategoryDistribution distribution = new CategoryDistribution("replica", categories());
         distribution.addOrUpdateCategory("analysis");
         repository.saveOrUpdate(distribution);
 
         CategoryDistribution updatedDistribution = repository.findByWord("replica");
         Assert.assertEquals(1, repository.count());
         Assert.assertEquals(CategoryScore.EMPTY, updatedDistribution.categoryScore("foobar"));
+    }
+
+    private List<Category> categories() {
+        return Arrays.asList(new Category("infrastructure"), new Category("analysis"));
     }
 }
