@@ -1,6 +1,5 @@
 package com.tidings.backend;
 
-import com.tidings.backend.domain.Probability;
 import com.tidings.backend.pipelines.training.FrequencyComputationStage;
 import com.tidings.backend.pipelines.training.ProbabilityCompuationStage;
 import com.tidings.backend.pipelines.training.TextSanitizationStage;
@@ -34,7 +33,7 @@ public class TrainingPipelineTest {
         TrainingDataExtractionStage extractionStage = new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
         TextSanitizationStage transformationStage = new TextSanitizationStage(transformationInbox, frequencyInbox, crawlWorker);
         FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker, new CategoryRepository(), new TrainingRepository());
-        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, new Probability(new CategoryRepository(), new CategoryDistributionRepository(), new TrainingRepository()));
+        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, new CategoryDistributionRepository(), new CategoryRepository());
 
         pipeline.addStage(extractionStage);
         pipeline.addStage(transformationStage);

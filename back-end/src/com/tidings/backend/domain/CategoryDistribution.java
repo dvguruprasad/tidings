@@ -40,14 +40,6 @@ public class CategoryDistribution {
         return categoryScores.containsKey(category) ? categoryScores.get(category) : CategoryScore.EMPTY;
     }
 
-    public void computeProbabilities(Probability probability) {
-        int totalFrequency = totalFrequency();
-        for (String category : categoryScores.keySet()) {
-            double probabilityOfWordAppearingInCategory = probability.ofWordAppearingInCategory(category, categoryScores.get(category));
-            categoryScores.get(category).setProbability(probabilityOfWordAppearingInCategory);
-        }
-    }
-
     private int totalFrequency() {
         int result = 0;
         for (CategoryScore categoryScore : categoryScores.values()) {

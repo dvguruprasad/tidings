@@ -1,6 +1,7 @@
 package com.tidings.backend.pipelines.training;
 
-import com.tidings.backend.domain.CategorizedWordsMatrix;
+import com.tidings.backend.domain.CategoryDistribution;
+import com.tidings.backend.domain.CategoryDistributionsBuilder;
 import com.tidings.backend.domain.Document;
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.CategoryRepository;
@@ -9,6 +10,8 @@ import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
+
+import java.util.List;
 
 public class FrequencyComputationStage extends Stage {
     private final CategoryDistributionRepository distributionRepository;
@@ -26,8 +29,9 @@ public class FrequencyComputationStage extends Stage {
 
     public void onMessage(Message message) {
         Document document = (Document) message.payload();
-        CategorizedWordsMatrix matrix = new CategorizedWordsMatrix(distributionRepository, categoryRepository.all()).train(document);
-        distributionRepository.saveOrUpdate(matrix.distributions());
+        CategoryDistributionsBuilder categoryDistributionsBuilder = new CategoryDistributionsBuilder(distributionRepository, categoryRepository);
+        List<CategoryDistribution> distributions = categoryDistributionsBuilder.distributions(document);
+        distributionRepository.saveOrUpdate(distributions);
         categoryRepository.addToWordCount(document.category(), document.wordBag().count());
 
         totalProcessed += 1;

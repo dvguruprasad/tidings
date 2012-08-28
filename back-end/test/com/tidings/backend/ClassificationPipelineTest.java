@@ -1,7 +1,7 @@
 package com.tidings.backend;
 
 import com.tidings.backend.domain.NewsTransformer;
-import com.tidings.backend.domain.Probability;
+import com.tidings.backend.domain.DocumentProbability;
 import com.tidings.backend.pipelines.classification.*;
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.CategoryRepository;
@@ -32,7 +32,7 @@ public class ClassificationPipelineTest {
         ThreadFiber classificationWorker = new ThreadFiber();
         ThreadFiber loadingWorker = new ThreadFiber();
 
-        Probability probability = new Probability(new CategoryRepository(), new CategoryDistributionRepository(), new TrainingRepository());
+        DocumentProbability probability = new DocumentProbability(new CategoryDistributionRepository(), new TrainingRepository());
 
         FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker);
         TransformStage trasformStage = transformationStage(transformInbox, dedupInbox, transformWorker);
