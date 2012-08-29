@@ -9,6 +9,8 @@ import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
 
+import java.util.Date;
+
 public class ProbabilityCompuationStage extends Stage {
 
     private final CategoryDistributionRepository categoryDistributionRepository;
@@ -22,7 +24,7 @@ public class ProbabilityCompuationStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        System.out.println("Computing probabilities...");
+        System.out.println("Computing probabilities... " + new Date());
         WordProbability wordProbability = WordProbability.create(categoryDistributionRepository, categoryRepository);
 
         Iterable<CategoryDistribution> allCategoryDistributions = categoryDistributionRepository.all();
@@ -30,6 +32,6 @@ public class ProbabilityCompuationStage extends Stage {
             distribution = wordProbability.compute(distribution);
             categoryDistributionRepository.saveOrUpdate(distribution);
         }
-        System.out.println("Finished training!");
+        System.out.println("Finished training! " + new Date());
     }
 }

@@ -13,6 +13,8 @@ import org.jetlang.channels.MemoryChannel;
 import org.jetlang.fibers.ThreadFiber;
 import org.junit.Test;
 
+import java.util.Date;
+
 public class TrainingPipelineTest {
     @Test
     public void shouldExecuteTheTrainingPipeline() {
@@ -39,7 +41,7 @@ public class TrainingPipelineTest {
         pipeline.addStage(transformationStage);
         pipeline.addStage(frequencyCompuationStage);
         pipeline.addStage(probabilityCompuationStage);
-
+        System.out.println("Started training at " + new Date());
         pipeline.start();
         trainingLoadInbox.publish(new Message("something"));
 

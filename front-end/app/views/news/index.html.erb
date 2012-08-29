@@ -18,12 +18,12 @@
   <ul class="pager">  
     <% if !@news_items.first_page? %>
       <li>  
-      <%= link_to "Previous", "/news?page=#{@news_items.current_page - 1}"%>
+      <%= link_to "Previous", "/news#{"/#{@category if @category}"}?page=#{@news_items.current_page - 1}"%>
       </li>  
     <% end %>
     <% if !@news_items.last_page? %>
       <li>  
-      <%= link_to "Next", "/news?page=#{@news_items.current_page + 1}"%>
+      <%= link_to "Next", "/news#{"/#{@category if @category}"}?page=#{@news_items.current_page + 1}"%>
       </li>  
     <% end%>
   </ul>

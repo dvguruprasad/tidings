@@ -1,5 +1,6 @@
 package com.tidings.backend.domain;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,10 @@ public class CategoryDistribution {
 
     public CategoryScore categoryScore(String category) {
         return categoryScores.containsKey(category) ? categoryScores.get(category) : CategoryScore.EMPTY;
+    }
+
+    public Collection<CategoryScore> categoryScores() {
+        return categoryScores.values();
     }
 
     private int totalFrequency() {

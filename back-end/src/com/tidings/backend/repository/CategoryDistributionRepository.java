@@ -2,11 +2,10 @@ package com.tidings.backend.repository;
 
 import com.mongodb.Bytes;
 import com.tidings.backend.domain.CategoryDistribution;
+import com.tidings.backend.domain.CategoryScore;
 import org.jongo.MongoCollection;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 public class CategoryDistributionRepository extends Repository {
     protected MongoCollection collection() {
@@ -16,13 +15,25 @@ public class CategoryDistributionRepository extends Repository {
 
     }
 
+    public void saveOrUpdate(Collection<CategoryDistribution> distributions) {
+        for (CategoryDistribution distribution : distributions) {
+            saveOrUpdate(distribution);
+        }
+    }
+
+    public void saveOrUpdate(Collection<CategoryDistribution> distributions, String category) {
+        for (CategoryDistribution distribution : distributions) {
+            saveOrUpdate(distribution, category);
+        }
+    }
+
     public void saveOrUpdate(CategoryDistribution distribution) {
         collection().update(byWord(distribution.word())).upsert().with(" # ", distribution);
     }
 
-    public void saveOrUpdate(Collection<CategoryDistribution> distributions) {
-        for (CategoryDistribution distribution : distributions) {
-            saveOrUpdate(distribution);
+    public void saveOrUpdate(CategoryDistribution distribution, String category) {
+        for (CategoryScore categoryScore : distribution.categoryScores()) {
+            collection().update(byWord(distribution.word())).with("{$inc : {\"categoryScores." + category + ".frequency\" : " + categoryScore.frequency() + "}}");
         }
     }
 
@@ -48,6 +59,12 @@ public class CategoryDistributionRepository extends Repository {
 
     public Iterable<CategoryDistribution> all(int offset) {
         return collection().find().skip(offset).as(CategoryDistribution.class);
+    }
+
+    public void save(Collection<CategoryDistribution> categoryDistributions) {
+        for (CategoryDistribution categoryDistribution : categoryDistributions) {
+            collection().save(categoryDistribution);
+        }
     }
 
     private String byWord(String word) {
