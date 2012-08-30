@@ -1,16 +1,6 @@
 package com.tidings.backend;
 
-import com.tidings.backend.domain.NewsTransformer;
-import com.tidings.backend.domain.DocumentProbability;
-import com.tidings.backend.pipelines.classification.*;
-import com.tidings.backend.repository.CategoryDistributionRepository;
-import com.tidings.backend.repository.CategoryRepository;
-import com.tidings.backend.repository.NewsItemsRepository;
-import com.tidings.backend.repository.TrainingRepository;
-import messagepassing.pipeline.Message;
-import messagepassing.pipeline.Pipeline;
-import org.jetlang.channels.MemoryChannel;
-import org.jetlang.fibers.ThreadFiber;
+import com.tidings.backend.pipelines.classification.ClassificationPipeline;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -20,69 +10,7 @@ public class ClassificationPipelineTest {
 
     @Test
     public void shouldExecuteAllStagesOfThePipeline() {
-        Pipeline pipeline = new Pipeline();
-        final MemoryChannel<Message> crawlInbox = new MemoryChannel<Message>();
-        MemoryChannel<Message> transformInbox = new MemoryChannel<Message>();
-        MemoryChannel<Message> dedupInbox = new MemoryChannel<Message>();
-        MemoryChannel<Message> loaderInbox = new MemoryChannel<Message>();
-        MemoryChannel<Message> classificationInbox = new MemoryChannel<Message>();
-        ThreadFiber crawlWorker = new ThreadFiber();
-        ThreadFiber transformWorker = new ThreadFiber();
-        ThreadFiber dedupWorker = new ThreadFiber();
-        ThreadFiber classificationWorker = new ThreadFiber();
-        ThreadFiber loadingWorker = new ThreadFiber();
-
-        DocumentProbability probability = new DocumentProbability(new CategoryDistributionRepository(), new TrainingRepository());
-
-        FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker);
-        TransformStage trasformStage = transformationStage(transformInbox, dedupInbox, transformWorker);
-        DeduplicationStage deduplicationStage = new DeduplicationStage(dedupInbox, classificationInbox, dedupWorker, new NewsItemsRepository());
-        ClassificationStage classificationStage = new ClassificationStage(classificationInbox, loaderInbox, classificationWorker, new CategoryRepository(), probability);
-        NewsItemsLoadingStage newsItemsLoadingStage = loadingStage(loaderInbox, loadingWorker);
-
-        pipeline.addStage(crawlStage);
-        pipeline.addStage(trasformStage);
-        pipeline.addStage(deduplicationStage);
-        pipeline.addStage(classificationStage);
-        pipeline.addStage(newsItemsLoadingStage);
-        pipeline.start();
-
-        crawlInbox.publish(new Message(feeds()));
-//        final Message crawlTrigger = new Message(new CrawlableSources());
-
-//        ThreadFiber scheduler = new ThreadFiber();
-//        Disposable scheduleWorker = scheduler.scheduleAtFixedRate(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("******************************************");
-//                System.out.println("Crawl Triggered at " + new Date());
-//                System.out.println("******************************************");
-//                crawlInbox.publish(crawlTrigger);
-//            }
-//        }, 0, 120, TimeUnit.MINUTES);
-//        scheduler.start();
-        try {
-            crawlWorker.join();
-            transformWorker.join();
-            classificationWorker.join();
-            loadingWorker.join();
-
-            crawlWorker.dispose();
-            transformWorker.dispose();
-            classificationWorker.dispose();
-            loadingWorker.dispose();
-//            scheduleWorker.dispose();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private NewsItemsLoadingStage loadingStage(MemoryChannel<Message> loaderInbox, ThreadFiber loadingWorker) {
-        return new NewsItemsLoadingStage(loaderInbox, null, loadingWorker, new NewsItemsRepository());
-    }
-
-    private TransformStage transformationStage(MemoryChannel<Message> transformInbox, MemoryChannel<Message> dedupInbox, ThreadFiber transformWorker) {
-        return new TransformStage(transformInbox, dedupInbox, transformWorker, new NewsTransformer());
+        new ClassificationPipeline(feeds()).start();
     }
 
     private List<String> feeds() {
@@ -99,59 +27,7 @@ public class ClassificationPipelineTest {
                 "http://www.thehindu.com/sci-tech/technology/?service=rss",
                 "http://us.lrd.yahoo.com/_ylt=AlmyQsAJU_5RRWApxa9dki3zscB_;_ylu=X3oDMTFnZDRsOWw5BG1pdANSU1MgRXRlcnRhaW5tZW50BHBvcwM1BHNlYwNNZWRpYVJTU0VkaXRvcmlhbA--;_ylg=X3oDMTFyZGdqa3FwBGludGwDaW4EbGFuZwNlbi1pbgRwc3RhaWQDBHBzdGNhdANlbnRlcnRhaW5tZW50BHB0A3NlY3Rpb25z;_ylv=0/SIG=11qm111fu/EXP=1347362371/**http%3A//in.news.yahoo.com/rss/bollywood",
                 "http://us.lrd.yahoo.com/_ylt=ArOt0UYdvUYcKgtCWXFl0jbzscB_;_ylu=X3oDMTFnNW91azJhBG1pdANSU1MgRXRlcnRhaW5tZW50BHBvcwM3BHNlYwNNZWRpYVJTU0VkaXRvcmlhbA--;_ylg=X3oDMTFyZGdqa3FwBGludGwDaW4EbGFuZwNlbi1pbgRwc3RhaWQDBHBzdGNhdANlbnRlcnRhaW5tZW50BHB0A3NlY3Rpb25z;_ylv=0/SIG=11qr2iksv/EXP=1347362371/**http%3A//in.news.yahoo.com/rss/hollywood"
-//                "http://rss.sciam.com/ScientificAmerican-Global",
-//                "http://www.sciencenewsdaily.org/feed.xml",
-//                "http://news.google.com/news?pz=1&cf=all&ned=in&hl=en&topic=e&output=rss",
-//                "http://timesofindia.indiatimes.com/rssfeeds/1081479906.cms",
-//                "http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml",
-//                "http://www.eonline.com/syndication/feeds/rssfeeds/celebritynews.xml",
-//                "http://www.thehindu.com/arts/theatre/?service=rss",
-//                "http://www.thehindu.com/arts/radio-and-tv/?service=rss",
-//                "http://www.bollywoodhungama.com/rss/movie_reviews.xml",
-//                "http://www.bollywoodhungama.com/rss/music_reviews.xml"
         };
         return Arrays.asList(feeds);
-    }
-
-
-    private List<String> bigDataFeeds() {
-        String[] feeds = {
-//                "http://allthingsd.com/tag/big-data/feed/",
-//                "http://feeds.feedburner.com/TdwiChannel-BigDataAnalytics",
-//                "http://blogs.teradata.com/rss/",
-//                "http://datastori.es/feed/",
-//                "http://hortonworks.com/feed/",
-//                "http://www.zdnet.com/blog/big-data/rss.xml",
-//                "http://feeds.feedburner.com/QlikviewMarketingIntelligenceBlog",
-//                "http://www.thebigdatainsightgroup.com/site/rss/articles/all",
-//                "http://www.smartercomputingblog.com/category/big-data/feed/",
-//                "http://bigdatablog.emc.com/?feed=rss2",
-//                "http://blogs.cisco.com/tag/big-data/feed",
-//                "http://beautifuldata.net/feed/",
-//                "http://blog.ffctn.com/rss.xml",
-//                "http://datawithoutborders.cc/feed/",
-//                "http://www.teradata.com/rss/Articles",
-//                "http://www.teradata.com/rss/News",
-//                "http://cloudofdata.com/tag/big-data/feed/",
-//                "http://www.sqlstream.com/blog/tag/big-data/feed/",
-                "http://www.clusterseven.com/ralph-baxters-big-data-blog/rss.xml",
-                "http://www.clusterseven.com/press-releases/rss.xml",
-                "http://blogs.splunk.com/feed/",
-                "http://feeds2.feedburner.com/WikibonBlog",
-                "http://www.appdynamics.com/blog/feed/",
-                "http://intelligentbusiness.biz/wordpress/?feed=rss2",
-                "http://feeds.feedburner.com/hkotadia/qkGh",
-                "http://www.cubrid.org/blog/rss",
-                "http://feeds.feedburner.com/smartdatacollective_allposts",
-                "http://feeds.feedburner.com/typepad/petewarden",
-                "http://marcandrews.typepad.com/marc_andrews/atom.xml",
-                "http://www.allthingsdistributed.com/index.xml",
-                "http://feeds.feedburner.com/Datavisualization"
-        };
-        return Arrays.asList(feeds);
-    }
-
-    public static void main(String[] args) {
-        new ClassificationPipelineTest().shouldExecuteAllStagesOfThePipeline();
     }
 }

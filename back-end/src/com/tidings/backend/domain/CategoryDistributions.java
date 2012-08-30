@@ -1,6 +1,9 @@
 package com.tidings.backend.domain;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CategoryDistributions {
     Map<String, CategoryDistribution> categoryDistributionMap;
