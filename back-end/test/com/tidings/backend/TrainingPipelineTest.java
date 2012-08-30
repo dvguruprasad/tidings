@@ -18,8 +18,6 @@ import java.util.Date;
 public class TrainingPipelineTest {
     @Test
     public void shouldExecuteTheTrainingPipeline() {
-        TrainingRepository trainingRepository = new TrainingRepository();
-
         Pipeline pipeline = new Pipeline();
 
         MemoryChannel<Message> trainingLoadInbox = new MemoryChannel<Message>();
@@ -32,10 +30,14 @@ public class TrainingPipelineTest {
         ThreadFiber frequencyWorker = new ThreadFiber();
         ThreadFiber probablityWorker = new ThreadFiber();
 
+        CategoryRepository categoryRepository = new CategoryRepository();
+        CategoryDistributionRepository categoryDistributionRepository = new CategoryDistributionRepository();
+        TrainingRepository trainingRepository = new TrainingRepository();
+
         TrainingDataExtractionStage extractionStage = new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
         TextSanitizationStage transformationStage = new TextSanitizationStage(transformationInbox, frequencyInbox, crawlWorker);
-        FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker, new CategoryRepository(), new TrainingRepository());
-        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, new CategoryDistributionRepository(), new CategoryRepository());
+        FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker, categoryRepository, trainingRepository, categoryDistributionRepository);
+        ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, categoryDistributionRepository, categoryRepository);
 
         pipeline.addStage(extractionStage);
         pipeline.addStage(transformationStage);
@@ -43,6 +45,7 @@ public class TrainingPipelineTest {
         pipeline.addStage(probabilityCompuationStage);
         System.out.println("Started training at " + new Date());
         pipeline.start();
+
         trainingLoadInbox.publish(new Message("something"));
 
         try {

@@ -6,8 +6,8 @@ public class CategoryDistributions {
     Map<String, CategoryDistribution> categoryDistributionMap;
     private List<Category> categories;
 
-    public CategoryDistributions() {
-        categories = Arrays.asList(new Category("Sports"), new Category("Science"), new Category("Entertainment"));
+    public CategoryDistributions(List<Category> categories) {
+        this.categories = categories;
         categoryDistributionMap = new HashMap<String, CategoryDistribution>();
     }
 

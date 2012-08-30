@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class CategoryDistribution {
     private String word;
-    Map<String, CategoryScore> categoryScores;
+    private Map<String, CategoryScore> categoryScores;
 
     public CategoryDistribution() {
     }
@@ -41,8 +41,8 @@ public class CategoryDistribution {
         return categoryScores.containsKey(category) ? categoryScores.get(category) : CategoryScore.EMPTY;
     }
 
-    public Collection<CategoryScore> categoryScores() {
-        return categoryScores.values();
+    public Map<String, CategoryScore> categoryScores() {
+        return categoryScores;
     }
 
     private int totalFrequency() {

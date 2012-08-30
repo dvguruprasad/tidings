@@ -24,7 +24,8 @@ public class ProbabilityCompuationStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        System.out.println("Computing probabilities... " + new Date());
+        System.out.println("Computing probabilities... ");
+        long then = System.currentTimeMillis();
         WordProbability wordProbability = WordProbability.create(categoryDistributionRepository, categoryRepository);
 
         Iterable<CategoryDistribution> allCategoryDistributions = categoryDistributionRepository.all();
@@ -32,6 +33,8 @@ public class ProbabilityCompuationStage extends Stage {
             distribution = wordProbability.compute(distribution);
             categoryDistributionRepository.saveOrUpdate(distribution);
         }
-        System.out.println("Finished training! " + new Date());
+
+        System.out.println("Finished computing probabilities. Took " + (System.currentTimeMillis() - then) + " ms.");
+        System.out.println("Finished Training at " + new Date());
     }
 }

@@ -25,7 +25,7 @@ public class WordProbability {
     }
 
     public CategoryDistribution compute(CategoryDistribution distribution) {
-        Map<String, CategoryScore> categoryScores = distribution.categoryScores;
+        Map<String, CategoryScore> categoryScores = distribution.categoryScores();
         for (String category : categoryScores.keySet()) {
             double probabilityOfWordAppearingInCategory = probabilityOfWordAppearingInCategory(category, categoryScores.get(category));
             categoryScores.get(category).setProbability(probabilityOfWordAppearingInCategory);
@@ -37,7 +37,7 @@ public class WordProbability {
         HashMap<String, Long> wordFrequencies = new HashMap<String, Long>();
         Iterable<Category> all = categoryRepository.all();
         for (Category category : all) {
-            wordFrequencies.put(category.name(), categoryRepository.find(category.name()).wordFrequency());
+            wordFrequencies.put(category.name(), category.wordFrequency());
         }
         return wordFrequencies;
     }

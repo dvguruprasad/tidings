@@ -32,7 +32,7 @@ public class CategoryDistributionRepository extends Repository {
     }
 
     public void saveOrUpdate(CategoryDistribution distribution, String category) {
-        for (CategoryScore categoryScore : distribution.categoryScores()) {
+        for (CategoryScore categoryScore : distribution.categoryScores().values()) {
             collection().update(byWord(distribution.word())).with("{$inc : {\"categoryScores." + category + ".frequency\" : " + categoryScore.frequency() + "}}");
         }
     }
@@ -57,8 +57,9 @@ public class CategoryDistributionRepository extends Repository {
         return collection().find().as(CategoryDistribution.class);
     }
 
-    public Iterable<CategoryDistribution> all(int offset) {
-        return collection().find().skip(offset).as(CategoryDistribution.class);
+    public Iterable<CategoryDistribution> all(int pageNumber, int pageSize) {
+        int offset = pageNumber * pageSize;
+        return collection().find().skip(offset).limit(pageSize).as(CategoryDistribution.class);
     }
 
     public void save(Collection<CategoryDistribution> categoryDistributions) {
