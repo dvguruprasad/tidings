@@ -24,8 +24,8 @@ public class TrainingDataCrawlStage extends Stage {
         Map<String, String[]> feedList = (Map<String, String[]>) message.payload();
         for (String category : feedList.keySet()) {
             String[] feeds = feedList.get(category);
-            for (String url : feeds) {
-                executorService.execute(pullFeeds(category, url));
+            for (String feedUrl : feeds) {
+                executorService.execute(feedCrawlRunnable(category, feedUrl));
             }
         }
 
@@ -38,7 +38,7 @@ public class TrainingDataCrawlStage extends Stage {
         }
     }
 
-    private Runnable pullFeeds(final String category, final String url) {
+    private Runnable feedCrawlRunnable(final String category, final String url) {
         return new Runnable() {
             public void run() {
                 System.out.println("Pulling feeds from: " + url);

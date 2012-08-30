@@ -48,4 +48,8 @@ public class TrainingPipeline {
             throw new RuntimeException(e);
         }
     }
+    
+    public static void main(String[] args){
+        new TrainingPipeline().start();
+    }
 }
