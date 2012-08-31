@@ -8,12 +8,12 @@
       <% items = @news_items.all %>
       <% items.each do |item| %>
         <div class="entry">
+          <div class="entry-hd"><%= item.publishedDate %></div>
           <h1 class="h3"><%= item.title %></h1>
           <p class="entry-text"><%= item.transformedText[0..430] %><%= link_to "Read more", item.link, :target => "_blank" %></p>
           <div class="meta">
             <span class="label"><%= item.category %></span>  
           </div>
-          <p><small><%= item.publishedDate %></small></p>
         </div>
       <% end %>
     </div>
