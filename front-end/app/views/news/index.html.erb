@@ -1,19 +1,36 @@
 <div class="container">
-  <header class="jumbotron subhead">
-  <h1>tidings</h1>
+  <header class="hero-unit">
+    <h1>tidings</h1>
   </header>
-  </br>
-  <% items = @news_items.all %>
-  <% items.each do |item| %>
-    <div class="container">
-      <strong><%= item.title %></strong>
-      </br>
-      <p><%= item.transformedText[0..430] %>...</p>
-      <h2><%= item.category %></h2>
-      <small><%= link_to "read more", item.link, :target => "_blank" %></small>
-      <p><small><%= item.publishedDate %></small></p>
+
+  <div class="bd row">
+    <div class="main span8">
+      <% items = @news_items.all %>
+      <% items.each do |item| %>
+        <div class="entry">
+          <h1 class="h3"><%= item.title %></h1>
+          <p class="entry-text"><%= item.transformedText[0..430] %><%= link_to "Read more", item.link, :target => "_blank" %></p>
+          <div class="meta">
+            <span class="label"><%= item.category %></span>  
+          </div>
+          <p><small><%= item.publishedDate %></small></p>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+
+    <div class="aside span4">
+      <h3>Categories</h3>
+      <ul class="nav nav-tabs nav-stacked">
+        <li><a href="#">Sports</a></li>
+        <li class="active"><a href="#">Culture</a></li>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">Education</a></li>
+        <li><a href="#">Design</a></li>
+      </ul>
+    </div>
+  </div>
+
+  
 
   <ul class="pager">  
     <% if !@news_items.first_page? %>
