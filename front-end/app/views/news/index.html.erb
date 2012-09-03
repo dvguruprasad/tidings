@@ -2,36 +2,70 @@
   <header class="hero-unit">
     <h1>tidings</h1>
   </header>
-
   <div class="bd row-fluid">
     <div class="main span8">
-      <% items = @news_items.all %>
-      <% items.each do |item| %>
-        <div class="entry">
-          <div class="row-fluid entry-hd">
-            <div class="span6">
-              <ul class="h-list">
-                <li><span class="badge badge-info">23</span> likes</li>
-                <li><span class="badge badge-info">11</span> shares</li>
-              </ul>
+      <div class="featured well">
+        <h3>Popular stories</h3>
+        <ul class="thumbnails">
+          <li class="span4">
+            <a href="">
+              <div class="thumbnail">
+              <img src="http://placehold.it/300x200" alt="">
+              <h3>London all set for paralympics</h3>
+              <p>The British High Commissioner, Sir James Bevan, pointed at the slogan &hellip;</p>
             </div>
-            <div class="span6 entry-published">
-              <p>19 hours ago <!-- <%= item.publishedDate %> --></p>
+            </a>
+          </li>
+          <li class="span4">
+            <a href="">
+              <div class="thumbnail">
+              <img src="http://placehold.it/300x200" alt="">
+              <h3>London all set for paralympics</h3>
+              <p>The British High Commissioner, Sir James Bevan, pointed at the slogan &hellip;</p>
             </div>
-          </div>
+            </a>
+          </li>
+          <li class="span4">
+            <a href="">
+              <div class="thumbnail">
+              <img src="http://placehold.it/300x200" alt="">
+              <h3>London all set for paralympics</h3>
+              <p>The British High Commissioner, Sir James Bevan, pointed at the slogan &hellip;</p>
+            </div>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-          <h1 class="h3"><%= item.title %></h1>
-          <p class="entry-text"><%= item.transformedText[0..430] %></p>
-          <p><%= link_to "read more", item.link, :target => "_blank" %></p>
-          <div class="meta">
-            <span class="label"><%= item.category %></span>  
+      <div class="entries">
+        <% items = @news_items.all %>
+        <% items.each do |item| %>
+          <div class="entry">
+            <div class="row-fluid entry-hd">
+              <div class="span6">
+                <ul class="h-list">
+                  <li><span class="badge badge-info">23</span> likes</li>
+                  <li><span class="badge badge-info">11</span> shares</li>
+                </ul>
+              </div>
+              <div class="span6 entry-published">
+                <p>19 hours ago <!-- <%= item.publishedDate %> --></p>
+              </div>
+            </div>
+
+            <h1 class="h3"><%= item.title %></h1>
+            <p class="entry-text"><%= item.transformedText[0..430] %></p>
+            <p><%= link_to "read more", item.link, :target => "_blank" %></p>
+            <div class="meta">
+              <span class="label"><%= item.category %></span>  
+            </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
 
     <div class="aside span4">
-      <form class="form-search">
+      <form class="form-search well">
         <input type="text" class="input-medium search-query">
         <button type="submit" class="btn">Search</button>
       </form>

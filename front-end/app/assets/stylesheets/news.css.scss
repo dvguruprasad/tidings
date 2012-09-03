@@ -29,6 +29,21 @@ body {
 	border-radius: 5px;
 }
 
+/* =featured */
+.featured {
+	margin-bottom: 42px;
+}
+.featured a {
+	text-decoration: none;
+	color: #333;
+}
+.featured a > .thumbnail {
+	background-color: #fff;
+}
+.featured a:hover > .thumbnail{
+	background: #F5F5F5;
+}
+
 /* =lists */
 .h-list {
 	margin: 0;
@@ -40,6 +55,10 @@ body {
 }
 
 /* =entry */
+.entries {
+	border-top: 1px solid #ddd;
+	padding-top: 42px;
+}
 .entry {
 	padding-bottom: 24px;
 	margin-bottom: 36px;
