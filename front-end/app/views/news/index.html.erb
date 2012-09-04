@@ -71,11 +71,11 @@
       </form>
       <h3>Categories</h3>
       <ul class="nav nav-tabs nav-stacked">
-        <li><a href="#">Sports</a></li>
-        <li class="active"><a href="#">Culture</a></li>
-        <li><a href="#">Technology</a></li>
-        <li><a href="#">Education</a></li>
-        <li><a href="#">Design</a></li>
+        <% @categories.each do |category|%>
+          <li class="<%= !@current_category.nil? && category.name.casecmp(@current_category) == 0 ? "active" : "" %>">
+            <%= link_to category.name, :controller => "news", :category => category.name.downcase %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
@@ -85,12 +85,12 @@
   <ul class="pager">  
     <% if !@news_items.first_page? %>
       <li>  
-      <%= link_to "Previous", "/news#{"/#{@category if @category}"}?page=#{@news_items.current_page - 1}"%>
+      <%= link_to "Previous", "/news#{"/#{@current_category if @current_category}"}?page=#{@news_items.current_page - 1}"%>
       </li>  
     <% end %>
     <% if !@news_items.last_page? %>
       <li>  
-      <%= link_to "Next", "/news#{"/#{@category if @category}"}?page=#{@news_items.current_page + 1}"%>
+      <%= link_to "Next", "/news#{"/#{@current_category if @current_category}"}?page=#{@news_items.current_page + 1}"%>
       </li>  
     <% end%>
   </ul>
