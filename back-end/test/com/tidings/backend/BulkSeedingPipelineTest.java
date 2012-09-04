@@ -163,11 +163,46 @@ public class BulkSeedingPipelineTest {
                 "http://news.yahoo.com/rss/entertainment;_ylt=AiLpBB22wyO7q9X_kY_u4HswFxkF;_ylu=X3oDMTFoZGJxbzBpBG1pdANSU1MgRW50ZXJ0YWlubWVudARwb3MDNQRzZWMDTWVkaWFSU1NFZGl0b3JpYWw-;_ylg=X3oDMTIyaW90OGk5BGludGwDdXMEbGFuZwNlbi11cwRwc3RhaWQDBHBzdGNhdANlbnRlcnRhaW5tZW50fG1vdmllcwRwdANzZWN0aW9ucw--;_ylv=3",
                 "http://news.yahoo.com/rss/fashion;_ylt=AscqSiI.y3oQ_aDPD_Xtk3EwFxkF;_ylu=X3oDMTFpYzhiNWhyBG1pdANSU1MgRW50ZXJ0YWlubWVudARwb3MDMTcEc2VjA01lZGlhUlNTRWRpdG9yaWFs;_ylg=X3oDMTIyaW90OGk5BGludGwDdXMEbGFuZwNlbi11cwRwc3RhaWQDBHBzdGNhdANlbnRlcnRhaW5tZW50fG1vdmllcwRwdANzZWN0aW9ucw--;_ylv=3",
                 "http://www.blockbuster.com/rss/top100",
+        };
 
+        String[] geekFeeds = new String[]{
+                "http://news.ycombinator.com/rss",
+                "http://www.reddit.com/r/programming.rss",
+                "http://www.systemswemake.com/feed/",
+                "http://www.lisazhang.ca/feeds/posts/default",
+                "http://tm.durusau.net/?feed=rss2",
+                "http://bitworking.org/news/feed/",
+                "http://feeds.feedburner.com/maxindelicato",
+                "http://pl.atyp.us/wordpress/?feed=rss2",
+                "http://clustercenter.org/rss2/all/",
+                "http://databeta.wordpress.com/feed/",
+                "http://fishofthebay.com/feed",
+                "http://www.dist-systems.bbn.com/papers/rss.xml",
+                "http://glinden.blogspot.com/feeds/posts/default",
+                "http://feeds.feedburner.com/catonmat",
+                "http://feeds.feedburner.com/HackingNetflix",
+                "http://www.stevesouders.com/blog/feed/",
+                "http://highscalability.com/rss.xml",
+                "http://www.informaniac.net/feeds/posts/default",
+                "http://www.kitchensoap.com/feed/",
+                "http://feeds.feedburner.com/MainlyData",
+                "http://muratbuffalo.blogspot.com/feeds/posts/default",
+                "http://mint.typepad.com/blog/rss.xml",
+                "http://blogs.msdn.com/pathelland/rss.xml",
+                "http://perspectives.mvdirona.com/SyndicationService.asmx/GetRss",
+                "http://horicky.blogspot.com/feeds/posts/default",
+                "http://feeds.feedburner.com/Shell-fu",
+                "http://feeds.feedburner.com/thechangelog",
+                "http://roy.gbiv.com/untangled/feed",
+                "http://www.allthingsdistributed.com/rss.xml",
+                "http://www.webperformancematters.com/journal/rss.xml",
+                "http://bartoszmilewski.wordpress.com/feed/",
+                "http://www.dzone.com/links/feed/frontpage/rss.xml",
         };
         categorizedFeeds.put("Sports", sportsFeeds);
         categorizedFeeds.put("Science", scienceFeeds);
         categorizedFeeds.put("Entertainment", entertainmentFeeds);
+        categorizedFeeds.put("Programming", geekFeeds);
         return categorizedFeeds;
     }
 
