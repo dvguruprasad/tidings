@@ -1,13 +1,6 @@
 package com.tidings.backend;
 
-import com.tidings.backend.pipelines.bulkseeding.TrainingDataCrawlStage;
-import com.tidings.backend.pipelines.bulkseeding.TrainingDataDeduplicationStage;
-import com.tidings.backend.pipelines.training.TrainingDataLoadingStage;
-import com.tidings.backend.repository.TrainingRepository;
-import messagepassing.pipeline.Message;
-import messagepassing.pipeline.Pipeline;
-import org.jetlang.channels.MemoryChannel;
-import org.jetlang.fibers.ThreadFiber;
+import com.tidings.backend.pipelines.bulkseeding.BulkSeedingPipeline;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -17,39 +10,10 @@ public class BulkSeedingPipelineTest {
 
     @Test
     public void shouldExecuteAllStagesOfThePipeline() {
-        Pipeline pipeline = new Pipeline();
-        final MemoryChannel<Message> crawlInbox = new MemoryChannel<Message>();
-        MemoryChannel<Message> dedupInbox = new MemoryChannel<Message>();
-        MemoryChannel<Message> loaderInbox = new MemoryChannel<Message>();
-
-        ThreadFiber crawlWorker = new ThreadFiber();
-        ThreadFiber transformWorker = new ThreadFiber();
-        ThreadFiber dedupWorker = new ThreadFiber();
-        ThreadFiber loadingWorker = new ThreadFiber();
-
-        TrainingDataCrawlStage crawlStage = new TrainingDataCrawlStage(crawlInbox, dedupInbox, crawlWorker);
-        TrainingDataDeduplicationStage deduplicationStage = new TrainingDataDeduplicationStage(dedupInbox, loaderInbox, dedupWorker, new TrainingRepository());
-        TrainingDataLoadingStage trainingDataLoadingStage = new TrainingDataLoadingStage(loaderInbox, null, loadingWorker, new TrainingRepository());
-
-        pipeline.addStage(crawlStage);
-        pipeline.addStage(deduplicationStage);
-        pipeline.addStage(trainingDataLoadingStage);
-        pipeline.start();
-        crawlInbox.publish(new Message(feeds()));
-        try {
-            crawlWorker.join();
-            transformWorker.join();
-            loadingWorker.join();
-
-            crawlWorker.dispose();
-            transformWorker.dispose();
-            loadingWorker.dispose();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        new BulkSeedingPipeline(feeds()).run();
     }
 
-    private Map<String, String[]> feeds() {
+    private static Map<String, String[]> feeds() {
         Map<String, String[]> categorizedFeeds = new HashMap<String, String[]>();
         String[] sportsFeeds = new String[]{
                 "http://sports.yahoo.com/mlb/rss.xml",
@@ -198,16 +162,30 @@ public class BulkSeedingPipelineTest {
                 "http://www.webperformancematters.com/journal/rss.xml",
                 "http://bartoszmilewski.wordpress.com/feed/",
                 "http://www.dzone.com/links/feed/frontpage/rss.xml",
+                "http://weblogs.asp.net/scottgu/rss.aspx",
+                "http://feeds.feedburner.com/ScottHanselman",
+                "http://feeds.feedburner.com/37signals/beMH",
+                "http://www.codeplex.com/site/feeds/rss",
+                "http://feeds.feedburner.com/pushingpixels",
+                "http://successfulsoftware.wordpress.com/feed",
+                "http://feeds2.feedburner.com/ProgrammableWeb",
+                "http://feeds.feedburner.com/hashrocket-blog",
+                "http://feeds.feedburner.com/allaboutagile",
+                "http://byatool.com/feed/",
+                "http://feeds2.feedburner.com/9lesson",
+                "http://jwcooney.com/feed/",
+                "http://blog.softwaredevelopersindia.com/?feed=rss2",
+                "http://feeds.feedburner.com/RuminationsOfAProgrammer",
         };
-        categorizedFeeds.put("Sports", sportsFeeds);
-        categorizedFeeds.put("Science", scienceFeeds);
-        categorizedFeeds.put("Entertainment", entertainmentFeeds);
-        categorizedFeeds.put("Programming", geekFeeds);
+//        categorizedFeeds.put("sports", sportsFeeds);
+//        categorizedFeeds.put("science", scienceFeeds);
+//        categorizedFeeds.put("entertainment", entertainmentFeeds);
+        categorizedFeeds.put("softwaredevelopment", geekFeeds);
         return categorizedFeeds;
     }
 
 
     public static void main(String[] args) {
-        new BulkSeedingPipelineTest().shouldExecuteAllStagesOfThePipeline();
+        new BulkSeedingPipeline(feeds()).run();
     }
 }

@@ -1,0 +1,5 @@
+db.categories.remove()
+db.categories.insert({"name" : "sports", "wordFrequency" : 0})
+db.categories.insert({"name" : "science", "wordFrequency" : 0})
+db.categories.insert({"name" : "entertainment", "wordFrequency" : 0})
+db.categories.insert({"name" : "softwaredevelopment", "wordFrequency" : 0})

@@ -57,11 +57,6 @@ public class CategoryDistributionRepository extends Repository {
         return collection().find().as(CategoryDistribution.class);
     }
 
-    public Iterable<CategoryDistribution> all(int pageNumber, int pageSize) {
-        int offset = pageNumber * pageSize;
-        return collection().find().skip(offset).limit(pageSize).as(CategoryDistribution.class);
-    }
-
     public void save(Collection<CategoryDistribution> categoryDistributions) {
         for (CategoryDistribution categoryDistribution : categoryDistributions) {
             collection().save(categoryDistribution);

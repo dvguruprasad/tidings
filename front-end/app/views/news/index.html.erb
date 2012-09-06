@@ -49,11 +49,11 @@
                 </ul>
               </div>
               <div class="span6 entry-published">
-                <p>19 hours ago <!-- <%= item.publishedDate %> --></p>
+                <p><%= item.publishedDate %></p>
               </div>
             </div>
 
-            <h1 class="h3"><%= item.title %></h1>
+            <h1 class="h3"><%= link_to item.title, item.link, :target => "_blank" %></h1>
             <p class="entry-text"><%= item.transformedText[0..430] %></p>
             <p><%= link_to "read more", item.link, :target => "_blank" %></p>
             <div class="meta">
@@ -79,19 +79,4 @@
       </ul>
     </div>
   </div>
-
-  
-
-  <ul class="pager">  
-    <% if !@news_items.first_page? %>
-      <li>  
-      <%= link_to "Previous", "/news#{"/#{@current_category if @current_category}"}?page=#{@news_items.current_page - 1}"%>
-      </li>  
-    <% end %>
-    <% if !@news_items.last_page? %>
-      <li>  
-      <%= link_to "Next", "/news#{"/#{@current_category if @current_category}"}?page=#{@news_items.current_page + 1}"%>
-      </li>  
-    <% end%>
-  </ul>
 </div>

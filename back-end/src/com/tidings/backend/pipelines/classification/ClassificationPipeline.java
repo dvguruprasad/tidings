@@ -1,26 +1,20 @@
 package com.tidings.backend.pipelines.classification;
 
 import com.tidings.backend.domain.DocumentProbability;
+import com.tidings.backend.domain.Link;
 import com.tidings.backend.domain.NewsTransformer;
-import com.tidings.backend.repository.CategoryDistributionRepository;
-import com.tidings.backend.repository.CategoryRepository;
-import com.tidings.backend.repository.NewsItemsRepository;
-import com.tidings.backend.repository.TrainingRepository;
+import com.tidings.backend.repository.*;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;
 import org.jetlang.fibers.ThreadFiber;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClassificationPipeline {
-    private List<String> feeds;
 
-    public ClassificationPipeline(List<String> feeds) {
-        this.feeds = feeds;
-    }
-
-    public void start() {
+    public void run() {
         Pipeline pipeline = new Pipeline();
         final MemoryChannel<Message> crawlInbox = new MemoryChannel<Message>();
         MemoryChannel<Message> transformInbox = new MemoryChannel<Message>();
@@ -48,7 +42,8 @@ public class ClassificationPipeline {
         pipeline.addStage(newsItemsLoadingStage);
         pipeline.start();
 
-        crawlInbox.publish(new Message(feeds));
+
+        crawlInbox.publish(new Message(newsFeeds()));
         try {
             crawlWorker.join();
             transformWorker.join();
@@ -62,5 +57,18 @@ public class ClassificationPipeline {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<String> newsFeeds() {
+        List<Link> all = new NewsFeedsRepository().all();
+        ArrayList<String> links = new ArrayList<String>();
+        for (Link link : all) {
+            links.add(link.value());
+        }
+        return links;
+    }
+
+    public static void main(String[] arguments) {
+        new ClassificationPipeline().run();
     }
 }

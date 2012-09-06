@@ -27,4 +27,8 @@ public class Link {
     public int hashCode() {
         return link != null ? link.hashCode() : 0;
     }
+    
+    public String value(){
+        return link;
+    }
 }

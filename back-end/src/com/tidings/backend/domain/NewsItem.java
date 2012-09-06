@@ -45,7 +45,7 @@ public class NewsItem {
     public void transformUsing(NewsTransformer transformer) {
         try {
             this.transformedText = transformer.transform(fullText);
-            this.wordBag = WordBag.create(transformer.sanitize(fullText));
+            this.wordBag = WordBag.create(transformer.sanitize(rawText));
             status = ItemStatus.TRANSFORMED;
         } catch (BoilerpipeProcessingException e) {
             status = ItemStatus.FAILED_TRANSFORMATION;
@@ -73,10 +73,6 @@ public class NewsItem {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-    
-    public void setWordBag(WordBag bag){
-        this.wordBag = bag;
     }
 
     public String fullText() {

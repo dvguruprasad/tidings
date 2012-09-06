@@ -3,6 +3,7 @@ package com.tidings.backend.pipelines.classification;
 
 import com.tidings.backend.domain.NewsFeed;
 import com.tidings.backend.domain.NewsFeedBuilder;
+import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
@@ -20,7 +21,7 @@ public class FeedCrawlStage extends Stage {
         List<String> feedList = (List<String>) message.payload();
         for (String url : feedList) {
             System.out.println("Pulling feed from: " + url);
-            NewsFeed feed = new NewsFeedBuilder().pullContents(url).extractFullText().instance();
+            NewsFeed feed = new NewsFeedBuilder(new TrainingRepository()).pullNewContents(url).extractFullText().instance();
             if (feed != null)
                 publish(new Message(feed));
         }

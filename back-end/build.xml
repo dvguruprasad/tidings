@@ -3,6 +3,7 @@
   
   
   <property file="build.properties"/>
+  <property file="${environment}.properties"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
@@ -11,6 +12,7 @@
   <!-- Compiler options -->
   
   <property name="compiler.debug" value="on"/>
+  <property name="db.dir" value="db"/>
   <property name="compiler.generate.no.warnings" value="off"/>
   <property name="compiler.args" value=""/>
   <property name="compiler.max.memory" value="128m"/>
@@ -221,7 +223,16 @@
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
-  
+
+  <target name="db">
+      <exec command="mongo localhost:27017/tidings_${environment} ${db.dir}/create_news_feeds.json"/>
+      <exec command="mongo localhost:27017/tidings_${environment} ${db.dir}/create_categories.json"/>
+  </target>
+
+  <target name="clean.db">
+      <exec command="mongo localhost:27017/tidings_${environment} ${db.dir}/drop_database.json"/>
+  </target>
+
   <target name="clean" depends="clean.module.back-end" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.back-end" description="build all modules"/>

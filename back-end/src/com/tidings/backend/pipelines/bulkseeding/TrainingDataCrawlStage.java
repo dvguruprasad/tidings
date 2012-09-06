@@ -11,7 +11,6 @@ import org.jetlang.fibers.Fiber;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class TrainingDataCrawlStage extends Stage {
 
@@ -20,21 +19,13 @@ public class TrainingDataCrawlStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        ExecutorService executorService = Executors.newFixedThreadPool(40);
+        ExecutorService executorService = Executors.newFixedThreadPool(30);
         Map<String, String[]> feedList = (Map<String, String[]>) message.payload();
         for (String category : feedList.keySet()) {
             String[] feeds = feedList.get(category);
             for (String feedUrl : feeds) {
                 executorService.execute(feedCrawlRunnable(category, feedUrl));
             }
-        }
-
-        executorService.shutdown();
-        try {
-            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-            System.out.println("Done crawling all feeds.");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
