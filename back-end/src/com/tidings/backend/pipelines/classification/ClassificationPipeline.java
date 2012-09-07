@@ -11,6 +11,9 @@ import org.jetlang.fibers.ThreadFiber;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ClassificationPipeline {
 
@@ -42,20 +45,33 @@ public class ClassificationPipeline {
         pipeline.addStage(newsItemsLoadingStage);
         pipeline.start();
 
+        new ClassificationScheduler(crawlInbox, newsFeeds()).beepForAnHour();
 
-        crawlInbox.publish(new Message(newsFeeds()));
         try {
             crawlWorker.join();
-            transformWorker.join();
-            classificationWorker.join();
-            loadingWorker.join();
-
-            crawlWorker.dispose();
-            transformWorker.dispose();
-            classificationWorker.dispose();
-            loadingWorker.dispose();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    class ClassificationScheduler {
+        private final ScheduledExecutorService scheduler =
+                Executors.newScheduledThreadPool(1);
+        private MemoryChannel<Message> entryPointInbox;
+        private List<String> feeds;
+
+        public ClassificationScheduler(MemoryChannel<Message> entryPointInbox, List<String> feeds) {
+            this.entryPointInbox = entryPointInbox;
+            this.feeds = feeds;
+        }
+
+        public void beepForAnHour() {
+            final Runnable beeper = new Runnable() {
+                public void run() {
+                    entryPointInbox.publish(new Message(feeds));
+                }
+            };
+            scheduler.scheduleAtFixedRate(beeper, 10, 5 * 60, TimeUnit.SECONDS);
         }
     }
 
