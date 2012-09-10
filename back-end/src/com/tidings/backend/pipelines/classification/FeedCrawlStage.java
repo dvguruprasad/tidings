@@ -10,6 +10,8 @@ import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FeedCrawlStage extends Stage {
 
@@ -19,13 +21,21 @@ public class FeedCrawlStage extends Stage {
 
     public void onMessage(Message message) {
         List<String> feedList = (List<String>) message.payload();
-        for (String url : feedList) {
-            System.out.println("Pulling feed from: " + url);
-            NewsFeed feed = new NewsFeedBuilder(new TrainingRepository()).pullNewContents(url).extractFullText().instance();
-            if (feed != null)
-                publish(new Message(feed));
+        ExecutorService executorService = Executors.newFixedThreadPool(20);
+        for (final String url : feedList) {
+            executorService.execute(pullFeedAndPublish(url));
         }
-        System.out.println("Completed one iteration of pulling all feeds");
+    }
+
+    private Runnable pullFeedAndPublish(final String url) {
+        return new Runnable() {
+            public void run() {
+                System.out.println("Pulling feed from: " + url);
+                NewsFeed feed = new NewsFeedBuilder(new TrainingRepository()).pullNewContents(url).extractFullText().instance();
+                if (feed != null)
+                    publish(new Message(feed));
+            }
+        };
     }
 
 }

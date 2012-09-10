@@ -22,27 +22,6 @@ public class NewsFeedBuilder {
         this.repository = repository;
     }
 
-    public NewsFeedBuilder pullContents(String url) {
-        try {
-            SyndFeed syndicatedFeed = new SyndFeedInput().build(new XmlReader(new URL(url)));
-            List<NewsItem> newsItems = new ArrayList<NewsItem>();
-            List entries = syndicatedFeed.getEntries();
-            for (Iterator i = entries.iterator(); i.hasNext(); ) {
-                SyndEntry entry = (SyndEntry) i.next();
-                if (null != entry) {
-                    String description = entry.getDescription() == null ? "" : entry.getDescription().getValue();
-                    NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), description, entry.getPublishedDate());
-                    newsItems.add(newsItem);
-                }
-            }
-
-            instance = new NewsFeed(syndicatedFeed.getTitle(), newsItems);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return this;
-    }
-
     public NewsFeedBuilder pullNewContents(String url) {
         try {
             SyndFeed syndicatedFeed = new SyndFeedInput().build(new XmlReader(new URL(url)));
