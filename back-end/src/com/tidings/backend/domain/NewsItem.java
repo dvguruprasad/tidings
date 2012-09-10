@@ -45,7 +45,7 @@ public class NewsItem {
     public void transformUsing(NewsTransformer transformer) {
         try {
             this.transformedText = transformer.transform(fullText);
-            this.wordBag = WordBag.create(transformer.sanitize(rawText));
+            this.wordBag = WordBag.create(transformer.sanitize(fullText));
             status = ItemStatus.TRANSFORMED;
         } catch (BoilerpipeProcessingException e) {
             status = ItemStatus.FAILED_TRANSFORMATION;

@@ -45,6 +45,7 @@ public class ClassificationPipeline {
         pipeline.addStage(newsItemsLoadingStage);
         pipeline.start();
 
+//        crawlInbox.publish(new Message(newsFeeds()));
         new ClassificationScheduler(crawlInbox, newsFeeds()).beepForAnHour();
 
         try {
