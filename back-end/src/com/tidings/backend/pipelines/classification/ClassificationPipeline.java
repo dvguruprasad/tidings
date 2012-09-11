@@ -9,7 +9,6 @@ import messagepassing.pipeline.Pipeline;
 import org.jetlang.channels.MemoryChannel;
 import org.jetlang.fibers.ThreadFiber;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -46,7 +45,7 @@ public class ClassificationPipeline {
         pipeline.start();
 
 //        crawlInbox.publish(new Message(newsFeeds()));
-        new ClassificationScheduler(crawlInbox, newsFeeds()).beepForAnHour();
+        new ClassificationScheduler(crawlInbox, new NewsFeedsRepository()).schedule();
 
         try {
             crawlWorker.join();
@@ -56,33 +55,30 @@ public class ClassificationPipeline {
     }
 
     class ClassificationScheduler {
-        private final ScheduledExecutorService scheduler =
-                Executors.newScheduledThreadPool(1);
+        private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         private MemoryChannel<Message> entryPointInbox;
-        private List<String> feeds;
+        private NewsFeedsRepository newsFeedsRepository;
 
-        public ClassificationScheduler(MemoryChannel<Message> entryPointInbox, List<String> feeds) {
+        public ClassificationScheduler(MemoryChannel<Message> entryPointInbox, NewsFeedsRepository newsFeedsRepository) {
             this.entryPointInbox = entryPointInbox;
-            this.feeds = feeds;
+            this.newsFeedsRepository = newsFeedsRepository;
         }
 
-        public void beepForAnHour() {
-            final Runnable beeper = new Runnable() {
-                public void run() {
-                    entryPointInbox.publish(new Message(feeds));
-                }
-            };
-            scheduler.scheduleAtFixedRate(beeper, 10, 5 * 60, TimeUnit.SECONDS);
+        public void schedule() {
+            long size = newsFeedsRepository.count();
+            int numberOfPages = 10;
+            int feedsPerPage = (int) Math.ceil(size / (double) numberOfPages);
+            int initialDelayInSeconds = 0;
+            for (int currentPage = 0; currentPage < numberOfPages; currentPage++, initialDelayInSeconds += (3 * 60)) {
+                final List<Link> feeds = newsFeedsRepository.all(currentPage, feedsPerPage);
+                final Runnable publishMessage = new Runnable() {
+                    public void run() {
+                        entryPointInbox.publish(new Message(feeds));
+                    }
+                };
+                scheduler.scheduleWithFixedDelay(publishMessage, initialDelayInSeconds, 5 * 60, TimeUnit.SECONDS);
+            }
         }
-    }
-
-    private List<String> newsFeeds() {
-        List<Link> all = new NewsFeedsRepository().all();
-        ArrayList<String> links = new ArrayList<String>();
-        for (Link link : all) {
-            links.add(link.value());
-        }
-        return links;
     }
 
     public static void main(String[] arguments) {

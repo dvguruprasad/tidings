@@ -18,4 +18,17 @@ public class NewsFeedsRepository extends Repository {
         }
         return result;
     }
+
+    public long count() {
+        return collection().count();
+    }
+
+    public List<Link> all(int pageNumber, int feedsPerPage) {
+        List<Link> result = new ArrayList<Link>();
+        Iterable<Link> iterable = collection().find().limit(feedsPerPage).skip(pageNumber * feedsPerPage).as(Link.class);
+        for (Link link : iterable) {
+            result.add(link);
+        }
+        return result;
+    }
 }

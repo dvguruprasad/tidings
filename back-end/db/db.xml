@@ -1,0 +1,17 @@
+<project basedir=".">
+    <property name="db.dir" value="."/>
+
+    <target name="db" depends="db.news.feeds, db.categories">
+    </target>
+
+    <target name="db.news.feeds">
+        <exec command="mongo ${host}:${port}/tidings_${environment} ${db.dir}/create_news_feeds.json"/>
+    </target>
+    <target name="db.categories">
+        <exec command="mongo ${host}:${port}/tidings_${environment} create_categories.json"/>
+    </target>
+
+    <target name="clean.db">
+        <exec command="mongo ${host}:${port}/tidings_${environment} drop_database.json"/>
+    </target>
+</project>
