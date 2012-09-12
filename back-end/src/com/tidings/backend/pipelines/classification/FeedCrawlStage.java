@@ -1,6 +1,7 @@
 package com.tidings.backend.pipelines.classification;
 
 
+import com.tidings.backend.domain.Link;
 import com.tidings.backend.domain.NewsFeed;
 import com.tidings.backend.domain.NewsFeedBuilder;
 import com.tidings.backend.repository.TrainingRepository;
@@ -20,10 +21,10 @@ public class FeedCrawlStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        List<String> feedList = (List<String>) message.payload();
+        List<Link> feedList = (List<Link>) message.payload();
         ExecutorService executorService = Executors.newFixedThreadPool(20);
-        for (final String url : feedList) {
-            executorService.execute(pullFeedAndPublish(url));
+        for (final Link link : feedList) {
+            executorService.execute(pullFeedAndPublish(link.value()));
         }
     }
 
