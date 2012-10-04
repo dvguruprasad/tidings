@@ -1,0 +1,76 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+.hero-unit {
+	padding: 30px;
+}
+.hero-unit .btn-link {
+	font-size: 1.2em;
+}
+.ul-horizontal  li {
+	display: inline-block;
+	margin-left: 10px;
+}
+.text-info {
+	color: #3A87AD;
+}
+
+dl.attributes {
+	list-style: none;
+	overflow: hidden;
+	color: #aaa;
+}
+
+dl.attributes dt, dl.attributes dd {
+	float: left;
+	margin: 0 6px 0 0;
+	padding: 0;
+}
+
+dl.attributes dd {
+	margin-right: 15px;
+}
+.results {
+	
+}
+.results li {
+	position: relative;
+	display: block;
+	border-bottom: 1px dotted #666;
+}
+.results h4 {
+	color: #840606;
+}
+.results .rating {
+	position: absolute;
+	right: 0;
+	top: 10px;
+}
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  font-size: 2em;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   color: red;
+}
+
+
+
+
+
+
+
+
+
+
