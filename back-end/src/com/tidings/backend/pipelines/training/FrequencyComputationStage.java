@@ -12,6 +12,8 @@ import org.jetlang.channels.Channel;
 import org.jetlang.fibers.Fiber;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FrequencyComputationStage extends Stage {
     private final CategoryDistributionRepository distributionRepository;
@@ -21,27 +23,40 @@ public class FrequencyComputationStage extends Stage {
     private final CategoryRepository categoryRepository;
     private final CategoryDistributions categoryDistributions;
 
+    Map<String, Long> wordCountsByCategory;
+
     public FrequencyComputationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber, CategoryRepository categoryRepository, TrainingRepository trainingRepository, CategoryDistributionRepository distributionRepository) {
         super(inbox, outbox, threadFiber);
         this.categoryRepository = categoryRepository;
         this.distributionRepository = distributionRepository;
         totalTrainingRecords = trainingRepository.getCategorizedRecordsCount();
         categoryDistributions = new CategoryDistributions(categoryRepository.all());
+        wordCountsByCategory = new HashMap<String, Long>();
     }
 
     public void onMessage(Message message) {
         Document document = (Document) message.payload();
         categoryDistributions.addOrUpdate(document);
-        categoryRepository.addToWordCount(document.category(), document.wordBag().count());
+        addToWordCount(document.category(), document.wordBag().count());
 
         totalProcessed += 1;
 
         if (totalProcessed == totalTrainingRecords) {
             for (CategoryDistribution categoryDistribution : categoryDistributions.list()) {
                 distributionRepository.save(categoryDistribution);
+                for (String category : wordCountsByCategory.keySet()) {
+                    categoryRepository.addToWordCount(category, wordCountsByCategory.get(category));
+                }
             }
             System.out.println("Finished frequency computing distribution. Triggering probability computation stage at " + new Date());
             publish(new Message("TriggerProbabilityComputation"));
         }
+    }
+
+    private void addToWordCount(String category, long count) {
+        if (wordCountsByCategory.containsKey(category))
+            wordCountsByCategory.put(category, wordCountsByCategory.get(category) + 1);
+        else
+            wordCountsByCategory.put(category, count);
     }
 }

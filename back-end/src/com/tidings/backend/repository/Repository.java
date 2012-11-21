@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 
 public abstract class Repository {
     protected static Jongo jongo;
+    protected String collectionName;
+
 
     public Repository() {
         Mongo mongo;

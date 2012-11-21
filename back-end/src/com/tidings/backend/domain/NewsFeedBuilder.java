@@ -4,7 +4,7 @@ import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
-import com.tidings.backend.repository.TrainingRepository;
+import com.tidings.backend.repository.NewsTrainingRepository;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,12 +13,13 @@ import java.util.List;
 
 public class NewsFeedBuilder {
     private NewsFeed instance;
-    private TrainingRepository repository;
+    private NewsTrainingRepository repository;
+    private static long count = 1;
 
     public NewsFeedBuilder() {
     }
 
-    public NewsFeedBuilder(TrainingRepository repository) {
+    public NewsFeedBuilder(NewsTrainingRepository repository) {
         this.repository = repository;
     }
 
@@ -31,7 +32,7 @@ public class NewsFeedBuilder {
                 SyndEntry entry = (SyndEntry) i.next();
                 if (null != entry && !repository.exists(entry.getLink())) {
                     String description = entry.getDescription() == null ? "" : entry.getDescription().getValue();
-                    NewsItem newsItem = new NewsItem(entry.getTitle(), entry.getLink(), description, entry.getPublishedDate());
+                    NewsItem newsItem = new NewsItem(count++, entry.getTitle(), entry.getLink(), entry.getPublishedDate());
                     newsItems.add(newsItem);
                 }
             }

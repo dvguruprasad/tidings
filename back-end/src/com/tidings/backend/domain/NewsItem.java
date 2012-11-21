@@ -1,6 +1,5 @@
 package com.tidings.backend.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
@@ -8,31 +7,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-public class NewsItem {
+public class NewsItem extends Document {
     private String title;
-    private String transformedText;
-    private Date publishedDate;
-    private ItemStatus status;
     private String link;
-    private String category;
-
-    @JsonIgnore
-    private String rawText;
-
-    private String fullText;
-
-    @JsonIgnore
-    private WordBag wordBag;
+    private Date publishedDate;
 
     public NewsItem() {
     }
 
-    public NewsItem(String title, String link, String rawText, Date publishedDate) {
+    public NewsItem(long id, String title, String link, Date publishedDate) {
+        this.identifier = id;
         this.title = title;
         this.link = link;
-        this.rawText = rawText;
         this.publishedDate = publishedDate;
-        status = ItemStatus.RAW;
     }
 
     @Override
@@ -46,10 +33,15 @@ public class NewsItem {
         try {
             this.transformedText = transformer.transform(fullText);
             this.wordBag = WordBag.create(transformer.sanitize(fullText));
-            status = ItemStatus.TRANSFORMED;
         } catch (BoilerpipeProcessingException e) {
-            status = ItemStatus.FAILED_TRANSFORMATION;
         }
+    }
+
+    public void transformUsing(TweetSanitizer sanitizer) {
+        this.title = "foo";
+        this.link = "dummy";
+        this.transformedText = fullText;
+        this.wordBag = WordBag.create(sanitizer.sanitize(fullText));
     }
 
     public void extractFullText() {
@@ -63,27 +55,7 @@ public class NewsItem {
         }
     }
 
-    public WordBag wordBag() {
-        return wordBag;
-    }
-
     public Link link() {
         return new Link(link);
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String fullText() {
-        return fullText;
-    }
-
-    public String category() {
-        return category;
-    }
-
-    public static enum ItemStatus {
-        TRANSFORMED, FAILED_TRANSFORMATION, RAW
     }
 }

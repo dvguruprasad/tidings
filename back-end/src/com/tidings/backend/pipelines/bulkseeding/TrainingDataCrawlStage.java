@@ -2,7 +2,7 @@ package com.tidings.backend.pipelines.bulkseeding;
 
 import com.tidings.backend.domain.NewsFeed;
 import com.tidings.backend.domain.NewsFeedBuilder;
-import com.tidings.backend.repository.TrainingRepository;
+import com.tidings.backend.repository.NewsTrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
@@ -14,8 +14,11 @@ import java.util.concurrent.Executors;
 
 public class TrainingDataCrawlStage extends Stage {
 
-    public TrainingDataCrawlStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber) {
+    private NewsTrainingRepository trainingRepository;
+
+    public TrainingDataCrawlStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber, NewsTrainingRepository trainingRepository) {
         super(inbox, outbox, threadFiber);
+        this.trainingRepository = trainingRepository;
     }
 
     public void onMessage(Message message) {
@@ -33,7 +36,7 @@ public class TrainingDataCrawlStage extends Stage {
         return new Runnable() {
             public void run() {
                 System.out.println("Pulling feeds from: " + url);
-                NewsFeed feed = new NewsFeedBuilder(new TrainingRepository()).pullNewContents(url).categorize(category).extractFullText().instance();
+                NewsFeed feed = new NewsFeedBuilder(trainingRepository).pullNewContents(url).categorize(category).extractFullText().instance();
                 if (feed != null)
                     publish(new Message(feed));
             }

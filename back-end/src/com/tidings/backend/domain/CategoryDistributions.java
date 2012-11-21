@@ -8,6 +8,7 @@ import java.util.Map;
 public class CategoryDistributions {
     Map<String, CategoryDistribution> categoryDistributionMap;
     private List<Category> categories;
+    private int count = 1;
 
     public CategoryDistributions(List<Category> categories) {
         this.categories = categories;

@@ -2,7 +2,7 @@ package com.tidings.backend.pipelines.classification;
 
 import com.tidings.backend.domain.Category;
 import com.tidings.backend.domain.DocumentProbability;
-import com.tidings.backend.domain.NewsItem;
+import com.tidings.backend.domain.Document;
 import com.tidings.backend.domain.WordBag;
 import com.tidings.backend.repository.CategoryRepository;
 import messagepassing.pipeline.Message;
@@ -24,9 +24,9 @@ public class ClassificationStage extends Stage {
     }
 
     public void onMessage(Message message) {
-        NewsItem newsItem = (NewsItem) message.payload();
+        Document document = (Document) message.payload();
         List<Category> categories = categoryRepository.all();
-        WordBag wordBag = newsItem.wordBag();
+        WordBag wordBag = document.wordBag();
 
         Category finalCategory = null;
         double highestProbability = Double.MAX_VALUE;
@@ -40,8 +40,8 @@ public class ClassificationStage extends Stage {
         }
 
         if (finalCategory != null) {
-            newsItem.setCategory(finalCategory.name());
+            document.categorize(finalCategory.name());
         }
-        publish(new Message(newsItem));
+        publish(new Message(document));
     }
 }

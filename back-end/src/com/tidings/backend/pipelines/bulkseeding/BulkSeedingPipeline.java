@@ -1,6 +1,7 @@
 package com.tidings.backend.pipelines.bulkseeding;
 
 import com.tidings.backend.pipelines.training.TrainingDataLoadingStage;
+import com.tidings.backend.repository.NewsTrainingRepository;
 import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Pipeline;
@@ -27,9 +28,11 @@ public class BulkSeedingPipeline {
         ThreadFiber dedupWorker = new ThreadFiber();
         ThreadFiber loadingWorker = new ThreadFiber();
 
-        TrainingDataCrawlStage crawlStage = new TrainingDataCrawlStage(crawlInbox, dedupInbox, crawlWorker);
-        TrainingDataDeduplicationStage deduplicationStage = new TrainingDataDeduplicationStage(dedupInbox, loaderInbox, dedupWorker, new TrainingRepository());
-        TrainingDataLoadingStage trainingDataLoadingStage = new TrainingDataLoadingStage(loaderInbox, null, loadingWorker, new TrainingRepository());
+        NewsTrainingRepository trainingRepository = TrainingRepository.forNewsClassification();
+
+        TrainingDataCrawlStage crawlStage = new TrainingDataCrawlStage(crawlInbox, dedupInbox, crawlWorker, trainingRepository);
+        TrainingDataDeduplicationStage deduplicationStage = new TrainingDataDeduplicationStage(dedupInbox, loaderInbox, dedupWorker, trainingRepository);
+        TrainingDataLoadingStage trainingDataLoadingStage = new TrainingDataLoadingStage(loaderInbox, null, loadingWorker, trainingRepository);
 
         pipeline.addStage(crawlStage);
         pipeline.addStage(deduplicationStage);

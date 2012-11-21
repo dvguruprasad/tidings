@@ -4,7 +4,63 @@
       <root url="file://$PROJECT_DIR$/lib" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/core/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/core/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/backwards/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/backwards/src/test-framework/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/common/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/common/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/kuromoji/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/kuromoji/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/kuromoji/src/tools/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/kuromoji/src/tools/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/phonetic/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/phonetic/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/smartcn/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/smartcn/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/stempel/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/analyzers/stempel/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/benchmark/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/benchmark/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/demo/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/demo/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/facet/src/examples" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/facet/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/facet/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/grouping/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/grouping/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/highlighter/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/highlighter/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/icu/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/icu/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/icu/src/tools/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/instantiated/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/instantiated/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/join/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/join/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/memory/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/memory/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/misc/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/misc/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/pruning/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/pruning/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/queries/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/queries/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/queryparser/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/queryparser/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/remote/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/remote/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/spatial/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/spatial/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/spellchecker/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/spellchecker/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/xml-query-parser/src/demo/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/xml-query-parser/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/contrib/xml-query-parser/src/test" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/test-framework/src/java" />
+      <root url="file://$USER_HOME$/Downloads/lucene-3.6.1 2/tools/src/java" />
+    </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/lib" recursive="false" />
   </library>
 </component>

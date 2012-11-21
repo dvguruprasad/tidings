@@ -5,11 +5,26 @@ import com.tidings.backend.domain.CategoryDistribution;
 import com.tidings.backend.domain.CategoryScore;
 import org.jongo.MongoCollection;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class CategoryDistributionRepository extends Repository {
+    private CategoryDistributionRepository(String collectionName) {
+        this.collectionName = collectionName;
+    }
+
+    public static CategoryDistributionRepository forSentimentAnalysis() {
+        return new CategoryDistributionRepository("tweets_category_distributions");
+    }
+
+
+    public static CategoryDistributionRepository forNewsClassification() {
+        return new CategoryDistributionRepository("news_category_distributions");
+    }
+
     protected MongoCollection collection() {
-        MongoCollection collection = jongo.getCollection("category_distributions");
+        MongoCollection collection = jongo.getCollection(collectionName);
         collection.getDBCollection().addOption(Bytes.QUERYOPTION_NOTIMEOUT);
         return collection;
 
@@ -28,7 +43,8 @@ public class CategoryDistributionRepository extends Repository {
     }
 
     public void saveOrUpdate(CategoryDistribution distribution) {
-        collection().update(byWord(distribution.word())).upsert().with(" # ", distribution);
+        String word = distribution.word().replace("\\", "\\\\"); // so that json parse happens on \\ and not \
+        collection().update(byWord(word)).upsert().with(" # ", distribution);
     }
 
     public void saveOrUpdate(CategoryDistribution distribution, String category) {
@@ -55,6 +71,16 @@ public class CategoryDistributionRepository extends Repository {
 
     public Iterable<CategoryDistribution> all() {
         return collection().find().as(CategoryDistribution.class);
+    }
+
+    public List<CategoryDistribution> all(int numberOfRecords, int offset, long lastRetrievedId) {
+        ArrayList<CategoryDistribution> result = new ArrayList<CategoryDistribution>();
+        Iterable<CategoryDistribution> iterable = null;
+        iterable = collection().find("{'id' : {$gt : #}}", lastRetrievedId).limit(numberOfRecords).sort("{id: 1}").as(CategoryDistribution.class);
+        for (CategoryDistribution distribution : iterable) {
+            result.add(distribution);
+        }
+        return result;
     }
 
     public void save(Collection<CategoryDistribution> categoryDistributions) {

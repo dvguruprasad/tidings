@@ -1,6 +1,7 @@
 package com.tidings.backend.repository;
 
-import com.tidings.backend.domain.Link;
+import com.tidings.backend.domain.Category;
+import com.tidings.backend.domain.Document;
 import com.tidings.backend.domain.NewsItem;
 import org.jongo.MongoCollection;
 
@@ -8,19 +9,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingRepository extends Repository {
-
-    public MongoCollection collection() {
-        return jongo.getCollection("training_data");
+    TrainingRepository(String collectionName) {
+        this.collectionName = collectionName;
     }
 
-    public List<NewsItem> getCategorizedRecords(int numberOfRecords, int offset) {
-        ArrayList<NewsItem> result = new ArrayList<NewsItem>();
-        Iterable<NewsItem> iterable = collection().find(whereCategoryIsNotNull()).limit(numberOfRecords).skip(offset).as(NewsItem.class);
-        for (NewsItem NewsItem : iterable) {
-            result.add(NewsItem);
+    public static TrainingRepository forSentimentAnalysis() {
+        return new TrainingRepository("twitter_sentiment_training_data");
+    }
+
+    public static NewsTrainingRepository  forNewsClassification() {
+        return new NewsTrainingRepository("news_training_data");
+    }
+
+
+    public MongoCollection collection() {
+        return jongo.getCollection(collectionName);
+    }
+
+    public List<Document> getCategorizedRecords(int numberOfRecords, int offset, long lastRetrievedId) {
+        ArrayList<Document> result = new ArrayList<Document>();
+        Iterable<Document> iterable = null;
+        iterable = collection().find("{'category' : {$ne : null}, 'identifier' : {$gt : #}}", lastRetrievedId)
+                .limit(numberOfRecords).sort("{identifier : 1}").as(Document.class);
+        for (Document document : iterable) {
+            result.add(document);
         }
         return result;
     }
+
+    public Iterable<NewsItem> all() {
+        return collection().find().as(NewsItem.class);
+    }
+
 
     public long getCategorizedRecordsCount() {
         return collection().count(whereCategoryIsNotNull());
@@ -34,24 +54,11 @@ public class TrainingRepository extends Repository {
         return collection().count("{'category' : '" + category + "'}");
     }
 
+    public long count(Category category) {
+        return count(category.name());
+    }
+
     public long count() {
         return collection().count();
-    }
-
-    public List<Link> uniqueLinks() {
-        Iterable<Link> iterable = collection().find("{},{\"link\" : 1, \"_id\" : 0}").as(Link.class);
-        List<Link> links = new ArrayList<Link>();
-        for (Link s : iterable) {
-            links.add(s);
-        }
-        return links;
-    }
-
-    public void save(NewsItem newsItem) {
-        collection().save(newsItem);
-    }
-
-    public boolean exists(String link) {
-        return collection().count("{\"link\" : \"" + link + "\"}") != 0;
     }
 }

@@ -1,5 +1,6 @@
 package com.tidings.backend.pipelines.training;
 
+import com.tidings.backend.domain.StopWords;
 import com.tidings.backend.repository.CategoryDistributionRepository;
 import com.tidings.backend.repository.CategoryRepository;
 import com.tidings.backend.repository.TrainingRepository;
@@ -24,12 +25,12 @@ public class TrainingPipeline {
         ThreadFiber frequencyWorker = new ThreadFiber();
         ThreadFiber probablityWorker = new ThreadFiber();
 
-        CategoryRepository categoryRepository = new CategoryRepository();
-        CategoryDistributionRepository categoryDistributionRepository = new CategoryDistributionRepository();
-        TrainingRepository trainingRepository = new TrainingRepository();
+        CategoryRepository categoryRepository = CategoryRepository.forNewsClassification();
+        CategoryDistributionRepository categoryDistributionRepository = CategoryDistributionRepository.forNewsClassification();
+        TrainingRepository trainingRepository = TrainingRepository.forNewsClassification();
 
         TrainingDataExtractionStage extractionStage = new TrainingDataExtractionStage(trainingLoadInbox, transformationInbox, dataExtractionWorker, trainingRepository);
-        TextSanitizationStage transformationStage = new TextSanitizationStage(transformationInbox, frequencyInbox, crawlWorker);
+        TextSanitizationStage transformationStage = new TextSanitizationStage(transformationInbox, frequencyInbox, crawlWorker, new StopWords("data/stopwords.txt"));
         FrequencyComputationStage frequencyCompuationStage = new FrequencyComputationStage(frequencyInbox, probabilityInbox, frequencyWorker, categoryRepository, trainingRepository, categoryDistributionRepository);
         ProbabilityCompuationStage probabilityCompuationStage = new ProbabilityCompuationStage(probabilityInbox, null, probablityWorker, categoryDistributionRepository, categoryRepository);
 

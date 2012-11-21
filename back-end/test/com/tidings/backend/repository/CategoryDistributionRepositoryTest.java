@@ -16,7 +16,7 @@ public class CategoryDistributionRepositoryTest {
 
     @Before
     public void setUp() {
-        repository = new CategoryDistributionRepository();
+        repository = CategoryDistributionRepository.forNewsClassification();
         repository.deleteAll();
     }
 

@@ -3,7 +3,7 @@ package com.tidings.backend.pipelines.bulkseeding;
 import com.tidings.backend.domain.Link;
 import com.tidings.backend.domain.NewsFeed;
 import com.tidings.backend.domain.NewsItem;
-import com.tidings.backend.repository.TrainingRepository;
+import com.tidings.backend.repository.NewsTrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
@@ -15,7 +15,7 @@ public class TrainingDataDeduplicationStage extends Stage {
     private List<Link> links;
 
     public TrainingDataDeduplicationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber,
-                                          TrainingRepository newsItemsRepository) {
+                                          NewsTrainingRepository newsItemsRepository) {
         super(inbox, outbox, threadFiber);
         links = newsItemsRepository.uniqueLinks();
     }

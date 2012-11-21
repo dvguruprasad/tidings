@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TextSanitizer {
+public class TextSanitizer implements Sanitizer {
     private StopWords stopWords;
 
-    public static TextSanitizer create() {
-        return new TextSanitizer(new StopWords("data/stopwords.txt"));
+    public static TextSanitizer create(StopWords stopWords) {
+        return new TextSanitizer(stopWords);
     }
 
     private TextSanitizer(StopWords stopWords) {

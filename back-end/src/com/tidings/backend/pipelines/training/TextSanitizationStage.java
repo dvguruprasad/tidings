@@ -1,9 +1,8 @@
 package com.tidings.backend.pipelines.training;
 
 import com.tidings.backend.domain.Document;
-import com.tidings.backend.domain.NewsItem;
+import com.tidings.backend.domain.StopWords;
 import com.tidings.backend.domain.TextSanitizer;
-import com.tidings.backend.domain.WordBag;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
@@ -14,16 +13,16 @@ import java.util.List;
 public class TextSanitizationStage extends Stage {
     private final TextSanitizer textSanitizer;
 
-    public TextSanitizationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber worker) {
+    public TextSanitizationStage(Channel<Message> inbox, Channel<Message> outbox, Fiber worker, StopWords stopWords) {
         super(inbox, outbox, worker);
-        textSanitizer = TextSanitizer.create();
+        textSanitizer = TextSanitizer.create(stopWords);
     }
 
     public void onMessage(Message message) {
-        List<NewsItem> items = (List<NewsItem>) message.payload();
-        for (NewsItem item : items) {
-            List<String> sanitized = textSanitizer.sanitize(item.fullText());
-            publish(new Message(new Document(WordBag.create(sanitized), item.category())));
+        List<Document> items = (List<Document>) message.payload();
+        for (Document document : items) {
+            document.sanitize(textSanitizer);
+            publish(new Message(document));
         }
     }
 }

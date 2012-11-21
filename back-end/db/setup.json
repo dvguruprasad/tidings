@@ -1,0 +1,27 @@
+db.sentiments.drop();
+db.createCollection("sentiments");
+db.sentiments.insert({"name" : "positive"});
+db.sentiments.insert({"name" : "negative"});
+
+db.tweets_category_distributions.drop();
+db.createCollection("tweets_category_distributions");
+db.tweets_category_distributions.ensureIndex({"word" : 1});
+
+db.twitter_sentiment_training_data.drop();
+db.createCollection("twitter_sentiment_training_data");
+db.twitter_sentiment_training_data.ensureIndex({"identifier" : 1});
+
+db.news_categories.drop();
+db.createCollection("news_categories");
+db.news_categories.insert({"name" : "sports"})
+db.news_categories.insert({"name" : "science"})
+db.news_categories.insert({"name" : "entertainment"})
+db.news_categories.insert({"name" : "softwaredevelopment"})
+
+db.news_category_distributions.drop();
+db.createCollection("news_category_distributions");
+db.news_category_distributions.ensureIndex({"word" : 1})
+
+db.news_training_data.drop();
+db.createCollection("news_training_data");
+db.news_training_data.ensureIndex({"identifier" : 1});

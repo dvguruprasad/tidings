@@ -29,12 +29,15 @@ public class ClassificationPipeline {
         ThreadFiber classificationWorker = new ThreadFiber();
         ThreadFiber loadingWorker = new ThreadFiber();
 
-        DocumentProbability probability = new DocumentProbability(new CategoryDistributionRepository(), new TrainingRepository());
+        CategoryRepository categoryRepository = CategoryRepository.forNewsClassification();
+        NewsTrainingRepository trainingRepository = TrainingRepository.forNewsClassification();
 
-        FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker);
+        DocumentProbability probability = new DocumentProbability(CategoryDistributionRepository.forNewsClassification(), trainingRepository, categoryRepository);
+
+        FeedCrawlStage crawlStage = new FeedCrawlStage(crawlInbox, transformInbox, crawlWorker, trainingRepository);
         TransformStage trasformStage = new TransformStage(transformInbox, dedupInbox, transformWorker, new NewsTransformer());
         DeduplicationStage deduplicationStage = new DeduplicationStage(dedupInbox, classificationInbox, dedupWorker, new NewsItemsRepository());
-        ClassificationStage classificationStage = new ClassificationStage(classificationInbox, loaderInbox, classificationWorker, new CategoryRepository(), probability);
+        ClassificationStage classificationStage = new ClassificationStage(classificationInbox, loaderInbox, classificationWorker, categoryRepository, probability);
         NewsItemsLoadingStage newsItemsLoadingStage = new NewsItemsLoadingStage(loaderInbox, null, loadingWorker, new NewsItemsRepository());
 
         pipeline.addStage(crawlStage);
@@ -44,7 +47,6 @@ public class ClassificationPipeline {
         pipeline.addStage(newsItemsLoadingStage);
         pipeline.start();
 
-//        crawlInbox.publish(new Message(newsFeeds()));
         new ClassificationScheduler(crawlInbox, new NewsFeedsRepository()).schedule();
 
         try {

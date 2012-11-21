@@ -4,7 +4,7 @@ package com.tidings.backend.pipelines.classification;
 import com.tidings.backend.domain.Link;
 import com.tidings.backend.domain.NewsFeed;
 import com.tidings.backend.domain.NewsFeedBuilder;
-import com.tidings.backend.repository.TrainingRepository;
+import com.tidings.backend.repository.NewsTrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
 import org.jetlang.channels.Channel;
@@ -16,8 +16,11 @@ import java.util.concurrent.Executors;
 
 public class FeedCrawlStage extends Stage {
 
-    public FeedCrawlStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber) {
+    private final NewsTrainingRepository repository;
+
+    public FeedCrawlStage(Channel<Message> inbox, Channel<Message> outbox, Fiber threadFiber, NewsTrainingRepository repository) {
         super(inbox, outbox, threadFiber);
+        this.repository = repository;
     }
 
     public void onMessage(Message message) {
@@ -32,7 +35,7 @@ public class FeedCrawlStage extends Stage {
         return new Runnable() {
             public void run() {
                 System.out.println("Pulling feed from: " + url);
-                NewsFeed feed = new NewsFeedBuilder(new TrainingRepository()).pullNewContents(url).extractFullText().instance();
+                NewsFeed feed = new NewsFeedBuilder(repository).pullNewContents(url).extractFullText().instance();
                 if (feed != null)
                     publish(new Message(feed));
             }

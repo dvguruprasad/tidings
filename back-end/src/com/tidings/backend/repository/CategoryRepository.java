@@ -1,6 +1,5 @@
 package com.tidings.backend.repository;
 
-import com.mongodb.DBCollection;
 import com.tidings.backend.domain.Category;
 import org.jongo.MongoCollection;
 
@@ -8,8 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryRepository extends Repository {
+    private CategoryRepository(String collectionName) {
+        this.collectionName = collectionName;
+    }
+
+    public static CategoryRepository forSentimentAnalysis() {
+        return new CategoryRepository("sentiments");
+    }
+
+    public static CategoryRepository forNewsClassification() {
+        return new CategoryRepository("news_categories");
+    }
+
     protected MongoCollection collection() {
-        return jongo.getCollection("categories");
+        return jongo.getCollection(collectionName);
     }
 
     public List<Category> all() {
@@ -31,7 +42,6 @@ public class CategoryRepository extends Repository {
 
     public void addToWordCount(String category, long count) {
         collection().update(byCategory(category)).upsert().with("{$inc: {\"wordFrequency\": " + count + "}}");
-
     }
 
     private String byCategory(String category) {

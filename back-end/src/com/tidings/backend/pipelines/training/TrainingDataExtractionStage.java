@@ -1,6 +1,6 @@
 package com.tidings.backend.pipelines.training;
 
-import com.tidings.backend.domain.NewsItem;
+import com.tidings.backend.domain.Document;
 import com.tidings.backend.repository.TrainingRepository;
 import messagepassing.pipeline.Message;
 import messagepassing.pipeline.Stage;
@@ -19,13 +19,17 @@ public class TrainingDataExtractionStage extends Stage {
 
     public void onMessage(Message message) {
         long total = trainingRepository.getCategorizedRecordsCount();
-        int pageSize = 10;
+        int pageSize = 10000;
         int pageNumber = ((int) Math.ceil((double) total / pageSize));
-        for (int currentPage = 0; currentPage < pageNumber; currentPage++) {
+
+        List<Document> records = trainingRepository.getCategorizedRecords(pageSize, 0, 0);
+        publish(new Message(records));
+        long lastRetrievedId = records.get(records.size() - 1).id();
+        for (int currentPage = 1; currentPage < pageNumber; currentPage++) {
             int offset = currentPage * pageSize;
-            List<NewsItem> records = trainingRepository.getCategorizedRecords(pageSize, offset);
+            records = trainingRepository.getCategorizedRecords(pageSize, offset, lastRetrievedId);
+            lastRetrievedId = records.get(records.size() - 1).id();
             publish(new Message(records));
         }
     }
-
 }

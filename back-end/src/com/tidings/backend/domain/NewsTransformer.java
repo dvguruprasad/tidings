@@ -11,7 +11,7 @@ public class NewsTransformer {
 
     public NewsTransformer() {
         articleExtractor = ArticleExtractor.getInstance();
-        textSanitizer = TextSanitizer.create();
+        textSanitizer = TextSanitizer.create(new StopWords("data/stopwords.txt"));
     }
 
     public NewsFeed transform(NewsFeed newsFeed) {

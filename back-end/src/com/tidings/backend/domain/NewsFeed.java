@@ -1,7 +1,5 @@
 package com.tidings.backend.domain;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-
 import java.util.List;
 
 public class NewsFeed {
@@ -27,7 +25,7 @@ public class NewsFeed {
 
     public void categorize(String category) {
         for (NewsItem newsItem : newsItems) {
-            newsItem.setCategory(category);
+            newsItem.categorize(category);
         }
     }
 

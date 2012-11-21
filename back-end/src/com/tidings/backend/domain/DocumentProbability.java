@@ -1,9 +1,11 @@
 package com.tidings.backend.domain;
 
 import com.tidings.backend.repository.CategoryDistributionRepository;
+import com.tidings.backend.repository.CategoryRepository;
 import com.tidings.backend.repository.TrainingRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class DocumentProbability {
@@ -11,9 +13,13 @@ public class DocumentProbability {
     private HashMap<String, Long> wordFrequencies;
     private final TrainingRepository trainingRepository;
 
-    public DocumentProbability(CategoryDistributionRepository categoryDistributionRepository, TrainingRepository trainingRepository) {
+    private HashMap<Category, Double> documentProbabilities;
+    private final CategoryRepository categoryRepository;
+
+    public DocumentProbability(CategoryDistributionRepository categoryDistributionRepository, TrainingRepository trainingRepository, CategoryRepository categoryRepository) {
         this.categoryDistributionRepository = categoryDistributionRepository;
         this.trainingRepository = trainingRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public double compute(Category category, WordBag wordBag) {
@@ -25,17 +31,24 @@ public class DocumentProbability {
                 result += (probabilityOfDocumentBelongingToCategoryGivenWord(category, distribution) * wordBag.frequency(word));
             }
         }
-        return result + ofDocumentBelongingToCategory(category.name());
+        return result + ofDocumentBelongingToCategory(category);
     }
 
     private double probabilityOfDocumentBelongingToCategoryGivenWord(Category category, CategoryDistribution distribution) {
         return log(distribution.categoryScore(category.name()).probability());
     }
 
-    private double ofDocumentBelongingToCategory(String categoryName) {
-        long numberOfDocumentsInCategory = trainingRepository.count(categoryName);
-        long totalNumberOfDocuments = trainingRepository.count();
-        return log(numberOfDocumentsInCategory / (double) totalNumberOfDocuments);
+    private double ofDocumentBelongingToCategory(Category category) {
+        if (null == documentProbabilities) {
+            documentProbabilities = new HashMap<Category, Double>();
+            List<Category> categories = categoryRepository.all();
+            for (Category c : categories) {
+                long numberOfDocumentsInCategory = trainingRepository.count(c);
+                long totalNumberOfDocuments = trainingRepository.count();
+                documentProbabilities.put(c, log(numberOfDocumentsInCategory / (double) totalNumberOfDocuments));
+            }
+        }
+        return documentProbabilities.get(category);
     }
 
     private double log(double value) {
