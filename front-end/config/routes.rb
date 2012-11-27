@@ -1,5 +1,4 @@
-FrontEnd::Application.routes.draw do
-  # The priority is based upon order of creation:
+FrontEnd::Application.routes.draw do # The priority is based upon order of creation:
   # first created -> highest priority.
 
   # Sample of regular route:
@@ -51,6 +50,7 @@ FrontEnd::Application.routes.draw do
   root :to => 'news#index'
 
   post "training/classify" => 'training#classify', :as => 'classify'
+  get "sentiment_analysis" => 'sentiment_analysis#index'
 
   # See how all your routes lay out with "rake routes"
 

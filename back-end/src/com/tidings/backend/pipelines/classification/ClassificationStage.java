@@ -29,18 +29,19 @@ public class ClassificationStage extends Stage {
         WordBag wordBag = document.wordBag();
 
         Category finalCategory = null;
-        double highestProbability = Double.MAX_VALUE;
+        double highestScore = Double.MAX_VALUE;
 
         for (Category category : categories) {
             double temp = probability.compute(category, wordBag);
-            if (temp < highestProbability) {
-                highestProbability = temp;
+            if (temp < highestScore) {
+                highestScore = temp;
                 finalCategory = category;
             }
         }
 
         if (finalCategory != null) {
             document.categorize(finalCategory.name());
+            document.setScore(highestScore);
         }
         publish(new Message(document));
     }

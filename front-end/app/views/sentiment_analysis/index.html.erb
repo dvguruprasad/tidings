@@ -1,0 +1,17 @@
+<h1>Sentiment Analysis</h1>
+
+<h2>What people are saying about <b>Apple</b></h2>
+
+<h3>Positive</h3>
+<ul>
+<% @top_positive_tweets.each do |tweet| %>
+  <li><%= "#{tweet.fullText}" %></li>
+<% end %>
+</ul>
+
+<h3>Negative</h3>
+<ul>
+<% @top_negative_tweets.each do |tweet| %>
+  <li><%= "#{tweet.fullText}" %></li>
+<% end %>
+</ul>

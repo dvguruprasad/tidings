@@ -13,6 +13,7 @@ public class Document {
 
     protected String category;
     protected String transformedText;
+    private double score;
 
     public Document() {
     }
@@ -47,5 +48,13 @@ public class Document {
 
     public void categorize(String category) {
         this.category = category;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
     }
 }
