@@ -23,6 +23,7 @@ public class ClassificationPipeline {
         MemoryChannel<Message> dedupInbox = new MemoryChannel<Message>();
         MemoryChannel<Message> loaderInbox = new MemoryChannel<Message>();
         MemoryChannel<Message> classificationInbox = new MemoryChannel<Message>();
+
         ThreadFiber crawlWorker = new ThreadFiber();
         ThreadFiber transformWorker = new ThreadFiber();
         ThreadFiber dedupWorker = new ThreadFiber();
@@ -71,14 +72,14 @@ public class ClassificationPipeline {
             int numberOfPages = 10;
             int feedsPerPage = (int) Math.ceil(size / (double) numberOfPages);
             int initialDelayInSeconds = 0;
-            for (int currentPage = 0; currentPage < numberOfPages; currentPage++, initialDelayInSeconds += (3 * 60)) {
+            for (int currentPage = 0; currentPage < numberOfPages; currentPage++, initialDelayInSeconds += (30 * 60)) {
                 final List<Link> feeds = newsFeedsRepository.all(currentPage, feedsPerPage);
                 final Runnable publishMessage = new Runnable() {
                     public void run() {
                         entryPointInbox.publish(new Message(feeds));
                     }
                 };
-                scheduler.scheduleWithFixedDelay(publishMessage, initialDelayInSeconds, 5 * 60, TimeUnit.SECONDS);
+                scheduler.scheduleWithFixedDelay(publishMessage, initialDelayInSeconds, 1, TimeUnit.HOURS);
             }
         }
     }
