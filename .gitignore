@@ -4,5 +4,5 @@ back-end/.idea/workspace.xml
 front-end/log/*.log
 front-end/tmp/
 front-end/tags
-front-end/.rvmrc
+.rvmrc
 

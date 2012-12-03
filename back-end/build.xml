@@ -14,6 +14,7 @@
     <property name="compiler.debug" value="on"/>
     <property name="base.dir" value="."/>
     <property name="db.dir" value="db"/>
+    <property name="data.dir" value="data"/>
     <property name="output.dir" value="${base.dir}/out"/>
     <property name="compiler.generate.no.warnings" value="off"/>
     <property name="compiler.args" value=""/>
@@ -94,7 +95,6 @@
     <property name="project.jdk.home" value="${jdk.home.1.6}"/>
     <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
     <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
-
 
     <!-- Project Libraries -->
 
@@ -232,12 +232,13 @@
     </target>
 
     <target name="package">
-        <zip destfile="${output.dir}/document_classifier.zip">
-            <zipfileset dir="${db.dir}" prefix="document_classifier/db"/>
-            <zipfileset dir="." includes="setup.xml" fullpath="document_classifier/setup.xml"/>
-            <zipfileset dir="." includes="production.properties" fullpath="document_classifier/production.properties"/>
-            <zipfileset dir="${output.dir}" includes="document_classifier.jar" fullpath="document_classifier/document_classifier.jar"/>
-        </zip>
+        <tar destfile="${output.dir}/document_classifier.tar">
+            <tarfileset dir="${db.dir}" prefix="document_classifier/db"/>
+            <tarfileset dir="${data.dir}" prefix="document_classifier/data"/>
+            <tarfileset dir="." includes="setup.xml" fullpath="document_classifier/setup.xml"/>
+            <tarfileset dir="." includes="production.properties" fullpath="document_classifier/production.properties"/>
+            <tarfileset dir="${output.dir}" includes="document_classifier.jar" fullpath="document_classifier/document_classifier.jar"/>
+        </tar>
     </target>
 
     <target name="clean" depends="clean.module.back-end" description="cleanup all"/>

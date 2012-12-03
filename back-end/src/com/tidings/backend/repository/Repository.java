@@ -9,16 +9,18 @@ import java.net.UnknownHostException;
 public abstract class Repository {
     protected static Jongo jongo;
     protected String collectionName;
+    private final TidingsEnvironment.DBConfig dbConfig;
 
 
     public Repository() {
+        dbConfig = TidingsEnvironment.getInstance().dbConfig();
         Mongo mongo;
         try {
-            mongo = new Mongo("localhost");
+            mongo = new Mongo(dbConfig.host(), dbConfig.port());
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
-        jongo = new Jongo(mongo.getDB("tidings_development"));
+        jongo = new Jongo(mongo.getDB(dbConfig.database()));
     }
 
     public void save(Object entity) {
